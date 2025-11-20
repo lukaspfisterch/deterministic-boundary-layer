@@ -37,7 +37,7 @@ graph LR
         Repro[Reproducibility Envelope]:::dbl
     end
 
-    Systems[Productive Systems\n(Mail, Tickets, ERP, DWH, Identities)]:::system
+    Systems["Productive Systems (Mail, Tickets, ERP, DWH, Identities)"]:::system
     Audit[Immutable Audit Log]:::log
 
     %% Connections
