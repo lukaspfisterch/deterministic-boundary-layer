@@ -2,7 +2,7 @@
 
 ## 1. Problem
 
-Non-deterministic systems — especially LLMs, reinforcement agents, and adaptive orchestration layers —  
+Non-deterministic systems - especially LLMs, reinforcement agents, and adaptive orchestration layers -  
 cannot guarantee identical outcomes for identical inputs.  
 This breaks traditional assumptions of traceability and compliance.
 
