@@ -28,7 +28,7 @@ graph LR
     %% Nodes
     User[Users & Applications]:::entry
     
-    subgraph DBL [Deterministic Boundary Layer (DBL)]
+    subgraph DBL["Deterministic Boundary Layer (DBL)"]
         direction TB
         Policy[Policy Mediation]:::dbl
         Exec[Execution Governance]:::dbl
