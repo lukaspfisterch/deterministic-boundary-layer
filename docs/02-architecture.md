@@ -4,11 +4,9 @@
 
 The DBL sits between three domains:
 
-- **External stimuli (non-deterministic)**: user input, models, agents  
-- **Deterministic control plane**: policies, identity, logging  
-- **Operational systems (deterministic)**: infrastructure, data, workflows
-
-### 1.1 High-level flow
+- **External Stimuli (non-deterministic)** → user input, models, agents  
+- **Deterministic Control Plane** → policies, identity, logging  
+- **Operational Systems (deterministic)** → infrastructure, data, workflows
 
 ```mermaid
 flowchart LR
@@ -16,9 +14,8 @@ flowchart LR
   B --> C[Execution Sandbox]
   C --> D[Infrastructure / System Actions]
   B --> E[Audit Chain]
-```
 
-### 1.2 DBL internal components
+```
 
 ```mermaid
 graph LR
@@ -30,7 +27,7 @@ graph LR
 
     %% Nodes
     User[Users & Applications]:::entry
-
+    
     subgraph DBL [Deterministic Boundary Layer (DBL)]
         direction TB
         Policy[Policy Mediation]:::dbl
@@ -50,7 +47,7 @@ graph LR
     Context --> Sign
     Sign --> Repro
     Repro -->|Controlled Actions| Systems
-
+    
     Policy -.->|Policy Events| Audit
     Sign -.->|Evidence| Audit
     Repro -.->|Replay / Forensics| Audit
@@ -59,4 +56,3 @@ graph LR
     linkStyle 0 stroke:#a64dff,stroke-width:2px;
     linkStyle 5 stroke:#ffffff,stroke-width:2px;
     linkStyle 6,7,8 stroke:#ffcc00,stroke-width:1px,stroke-dasharray: 3 3;
-```
