@@ -1,28 +1,87 @@
-# Foundation – Motivation & Scope
+# Foundation
 
-## 1. Problem
+## Problem Statement
 
-Non-deterministic systems - especially LLMs, reinforcement agents, and adaptive orchestration layers -  
-cannot guarantee identical outcomes for identical inputs.  
-This breaks traditional assumptions of traceability and compliance.
+Nondeterministic systems (AI models, external services, adaptive agents) violate core infrastructure assumptions:
 
-## 2. Consequence
+- **No reproducibility:** identical inputs may yield different outputs
+- **No traceability:** internal state is not fully observable
+- **No causal continuity:** classical debugging and audit fail
+- **No bounded behavior:** risk models cannot predict outcomes
 
-Without a deterministic wrapper:
-- Risk models collapse (no bounded behavior).
-- Post-event analysis lacks causal continuity.
-- Legal or audit obligations cannot be fulfilled.
+Traditional infrastructure requires deterministic coordination. Nondeterministic components require isolation and governance.
 
-## 3. Position of DBL
+---
 
-DBL defines a **deterministic perimeter**:
-- All inputs pass through a *policy-controlled gateway*.
-- Every decision point is *logged, signed, and timestamped*.
-- Execution contexts are *segregated and sealed*.
+## Scope
 
-## 4. Outcome
+DBL defines a deterministic boundary around nondeterministic systems. It does not make the systems themselves deterministic. It makes their operational impact deterministic.
 
-The result is not a deterministic model —  
-but a **deterministic operational footprint**.
+**In scope:**
+- Policy-based request mediation
+- Deterministic execution governance
+- Result validation and filtering
+- Immutable audit trails
 
-This footprint enables reproducibility, evidence trails, and safe integration into regulated infrastructures.
+**Out of scope:**
+- Model explainability or interpretability
+- Internal model behavior modification
+- Deterministic model outputs
+- Replacement of foundation models
+
+---
+
+## Architectural Position
+
+DBL sits between three domains:
+
+1. **Nondeterministic sources:** AI models, external APIs, human users
+2. **Deterministic control plane:** policies, identity, audit
+3. **Deterministic infrastructure:** databases, filesystems, networks, services
+
+DBL ensures all transitions from domain 1 to domain 3 pass through domain 2.
+
+---
+
+## Relation to KL Execution Theory
+
+[KL Execution Theory](https://github.com/lukaspfisterch/kl-execution-theory) defines minimal axioms for controlled execution:
+
+- **Δ (atomic transition):** single state change
+- **V (behavior):** sequence of transitions
+- **t (logical time):** index in behavior
+- **G (governance):** policy evaluation over behavior
+- **L (boundaries):** constraint enforcement over behavior
+
+**DBL implements G and L:**
+- **G:** Policy Sandbox, Result Filter (governance)
+- **L:** Query Mediator, Execution Gate (boundaries)
+
+**KL Kernel Logic implements Δ:**
+- Kernel.execute() provides atomic deterministic execution
+
+DBL wraps KL and other substrates with governance and boundary enforcement.
+
+---
+
+## Design Principles
+
+1. **External governance:** control behavior from outside, not inside
+2. **Deterministic perimeter:** all boundary decisions are reproducible
+3. **Audit by default:** every transition is logged immutably
+4. **Zero direct action:** nondeterministic systems have no direct operational authority
+5. **Policy as code:** all rules are explicit, versioned, testable
+
+---
+
+## Outcome
+
+DBL produces a **deterministic operational footprint** for nondeterministic systems.
+
+This footprint enables:
+- Forensic reconstruction of decision paths
+- Compliance with regulatory requirements
+- Safe integration into regulated infrastructure
+- Reproducible policy evaluation and audit
+
+The nondeterministic system remains nondeterministic. The boundary around it is deterministic.

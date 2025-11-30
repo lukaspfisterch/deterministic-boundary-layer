@@ -1,281 +1,536 @@
-# Deterministic Boundary Layer (DBL)
+# DBL Architecture v1.1
 
-Architecture Draft v1.1  
-Deterministic boundary for heterogeneous and non-deterministic systems  
-Status: Working draft, exploratory architecture note
+**Deterministic boundary for heterogeneous and nondeterministic systems**
+
+Status: Working draft, detailed architecture specification
 
 ---
 
 ## 1. Purpose
 
-This document outlines an architectural approach for integrating heterogeneous and non-deterministic systems, including AI and ML models, into deterministic operational infrastructures.
+This document defines a boundary architecture for integrating nondeterministic systems (AI models, external services, adaptive agents) into deterministic operational infrastructure.
 
-The goal is to stabilise the boundaries around these components, not to change their internal behaviour.
+**Goal:** Stabilize the operational perimeter around nondeterministic components without modifying their internal behavior.
 
 ---
 
 ## 2. Background
 
-Traditional infrastructures rely on:
+### Infrastructure Requirements
 
-- deterministic execution  
-- reproducible outcomes  
-- traceable state transitions  
-- causal logs  
-- predictable operator behaviour  
+Classical deterministic infrastructure assumes:
 
-Non-deterministic components violate these assumptions:
+- Reproducible execution for identical inputs
+- Observable state transitions
+- Causal event logs
+- Bounded and predictable behavior
+- Clear authority boundaries
 
-- internal states are not fully observable  
-- identical inputs may produce different outputs  
-- classical logging is incomplete  
-- debugging paths break  
-- authority boundaries blur  
+### Nondeterministic System Characteristics
 
-The challenge is primarily architectural, not algorithmic.
+AI models, ML agents, and external black box services violate these assumptions:
 
----
+- Internal states are not fully observable
+- Identical inputs may produce different outputs
+- Classical logging captures incomplete information
+- Debugging and causal analysis break down
+- Authority boundaries blur between model and infrastructure
 
-## 3. Architectural Problem
+### Architectural Gap
 
-Operational systems require deterministic coordination.  
-Non-deterministic subsystems require:
+Operational systems require deterministic coordination. Nondeterministic subsystems require isolation, controlled interfaces, policy constraints, verified action paths, and full auditability.
 
-- isolation  
-- controlled input and output surfaces  
-- policy-constrained behaviour  
-- verified action paths  
-- auditability  
-
-Today, these controls are scattered or missing.  
-A unified deterministic boundary between models and infrastructure is missing.
+A unified deterministic boundary layer is required.
 
 ---
 
-## 4. Core Hypothesis
+## 3. Core Hypothesis
 
-A deterministic boundary layer is required to safely coordinate heterogeneous and non-deterministic components inside operational infrastructures.
+A deterministic boundary layer can safely coordinate nondeterministic components inside operational infrastructure by governing their external behavior without modifying their internal logic.
 
-This layer governs behaviour externally, without modifying model internals.  
-It wraps non-deterministic engines in a deterministic execution membrane.
+This layer wraps nondeterministic engines in a deterministic execution membrane.
 
 ---
 
-## 5. Proposed Architecture
+## 4. Architecture Model
 
-The Deterministic Boundary Layer consists of six cooperating components.
+DBL consists of five cooperating components.
 
-### 5.1 Query Mediation Layer
+### Component Overview
 
-Normalises and classifies inbound requests before they reach any non-deterministic engine.
+```
+External Request (nondeterministic)
+    ↓
+[1. Query Mediator]      normalize, validate, bind identity
+    ↓
+[2. Policy Sandbox]      evaluate policy, enforce boundaries
+    ↓
+[3. Execution Gate]      execute via KL Kernel or wrapped subsystem
+    ↓
+[4. Result Filter]       validate output, apply safety filters
+    ↓
+[5. Audit Layer]         record immutable trace
+    ↓
+Response (deterministic)
+```
 
-**Functions**
+---
 
-- input validation  
-- routing and fan-out selection  
-- safety pre-filters  
-- context binding  
-- request isolation  
+## 5. Component Specifications
 
-This layer connects directly to identity and policy sources and produces a normalised request envelope.
+### 5.1 Query Mediator
+
+**Responsibility:** Normalize and prepare inbound requests for policy evaluation.
+
+**Inputs:**
+- Raw external request (HTTP, gRPC, message queue, etc.)
+- Request metadata (headers, identity tokens, correlation IDs)
+
+**Functions:**
+
+1. **Input validation:**
+   - Schema enforcement (JSON Schema, Protobuf, etc.)
+   - Size and complexity limits
+   - Injection detection (SQL, command, prompt injections)
+
+2. **Request classification:**
+   - Routing based on psi_type or intent
+   - Domain and effect extraction
+   - Criticality assignment
+
+3. **Context binding:**
+   - Identity extraction (user_id, tenant_id)
+   - Request tracking (request_id, correlation_id, parent_trace_id)
+   - Timestamp and session metadata
+
+4. **Safety pre-filters:**
+   - Block known malicious patterns
+   - Enforce character set restrictions
+   - Apply content policies (profanity, violence, etc.)
+
+**Outputs:**
+- Normalized request envelope (RequestEnvelope)
+- Bound execution context (ExecutionContext)
+- Routing decision (which execution path)
+
+**Integration with KL:**
+
+The Query Mediator constructs a PsiDefinition and ExecutionContext for KL Kernel Logic:
+
+```python
+from kl_kernel_logic import PsiDefinition, ExecutionContext, ExecutionPolicy
+
+psi = PsiDefinition(
+    psi_type=request.psi_type,
+    domain=request.domain,
+    effect=request.effect,
+    schema_version="1.0",
+    correlation_id=request.correlation_id,
+    criticality=request.criticality,
+)
+
+policy = ExecutionPolicy(
+    allow_network=False,  # determined by Policy Sandbox
+    allow_filesystem=False,
+    timeout_seconds=10.0,
+)
+
+ctx = ExecutionContext(
+    user_id=request.user_id,
+    request_id=request.request_id,
+    policy=policy,
+)
+```
 
 ---
 
 ### 5.2 Policy Sandbox
 
-Defines the permitted operational scope for each request.
+**Responsibility:** Evaluate request against policies and enforce boundaries.
 
-**Functions**
+**Inputs:**
+- RequestEnvelope (from Query Mediator)
+- ExecutionContext (user, tenant, session)
+- Policy database (RBAC, ABAC, custom rules)
 
-- permission models  
-- rate limits and quotas  
-- environmental boundaries  
-- deterministic rule evaluation  
-- context consistency checks  
+**Functions:**
 
-Only requests that pass the sandbox can reach the non-deterministic subsystem.  
-All decisions are deterministic and reproducible.
+1. **Permission evaluation:**
+   - Role-based access control (RBAC)
+   - Attribute-based access control (ABAC)
+   - Custom policy expressions (OPA, Cedar, etc.)
 
----
+2. **Boundary enforcement:**
+   - Network access (allow_network)
+   - Filesystem access (allow_filesystem)
+   - External service calls (allow_external_apis)
+   - Execution timeout (timeout_seconds)
 
-### 5.3 Non-Deterministic Subsystem
+3. **Rate limiting and quotas:**
+   - Per-user request limits
+   - Per-tenant resource quotas
+   - Global concurrency limits
+   - Temporal constraints (time windows, cooldowns)
 
-The component whose internal reasoning cannot be deterministically reconstructed.
+4. **Context consistency:**
+   - Validate user is active and authorized
+   - Check tenant subscription status
+   - Verify session is not expired
+   - Detect anomalous request patterns
 
-**Characteristics**
+**Outputs:**
+- PolicyDecision (allowed: bool, reason: str)
+- Enriched ExecutionPolicy (with resolved boundaries)
+- Audit event (policy evaluation record)
 
-- probabilistic or adaptive behaviour  
-- evolving models and parameters  
-- incomplete internal traceability  
-- no direct operational authority  
+**Decision Logic:**
 
-Examples include LLMs, ML models, rule engines with stochastic elements, or external black box services.
+The Policy Sandbox uses deterministic rule evaluation. All decisions are reproducible given the same inputs and policy version.
 
----
+**Integration with KL:**
 
-### 5.4 Result Verification Layer
+The Policy Sandbox populates ExecutionPolicy for KL:
 
-Evaluates outputs from the non-deterministic subsystem before they touch any operational surface.
+```python
+from kl_kernel_logic import ExecutionPolicy
 
-**Functions**
+# PolicySandbox determines these values
+policy = ExecutionPolicy(
+    allow_network=decision.allow_network,
+    allow_filesystem=decision.allow_filesystem,
+    timeout_seconds=decision.timeout_seconds,
+)
+```
 
-- schema and type checks  
-- safety and policy filters  
-- determinism guards, for example output range checks  
-- consistency validation against prior state  
-- signature and provenance requirements  
-
-Only outputs that pass verification can progress to the action gateway.
-
----
-
-### 5.5 Action Gateway
-
-Provides the only authorised path through which operational actions are executed.
-
-**Functions**
-
-- enforce zero direct action from models  
-- translate verified outputs into deterministic actions  
-- sign actions through a deterministic authority component  
-- maintain full audit logs of execution  
-- expose quarantine and rollback paths  
-- enforce operational boundaries and rate limits  
-
-The gateway operates on infrastructure level identities and policies, not on model identities.
+If the decision is `allowed=False`, execution stops and an audit event is recorded.
 
 ---
 
-### 5.6 State and Audit Ledger
+### 5.3 Execution Gate
 
-Records decisions, transitions and boundary events in an immutable form.
+**Responsibility:** Execute request via deterministic substrate or wrapped nondeterministic subsystem.
 
-**Functions**
+**Execution Paths:**
 
-- append-only event history  
-- support for reproducibility and replay  
-- integration with governance and compliance systems  
-- forensic reconstruction of decision paths  
-- lifecycle transparency for requests, policies and actions  
+**Path A: Deterministic Execution (via KL Kernel Logic)**
 
-This ledger is the primary evidence source for regulators, auditors and incident responders.
+Used for:
+- Pure functions (domain="math", effect="pure")
+- Controlled I/O (domain="io", effect="read" or "io")
+- Deterministic workflows
+
+Integration:
+
+```python
+from kl_kernel_logic import CAEL, Kernel
+
+# Use CAEL for policy-integrated execution
+cael = CAEL()
+trace = cael.execute(psi=psi, task=task, ctx=ctx)
+
+# Or use Kernel for low-level control
+kernel = Kernel()
+trace = kernel.execute(psi=psi, task=task)
+```
+
+Output: ExecutionTrace with full timing, policy metadata, and outcome.
+
+**Path B: Nondeterministic Execution (via wrapped subsystem)**
+
+Used for:
+- AI models (domain="ai", effect="external")
+- External APIs (domain="external", effect="io")
+- Black box services
+
+Integration:
+
+```python
+# Wrap external subsystem
+def wrapped_ai_call(prompt: str) -> str:
+    response = external_ai_api.invoke(prompt)
+    return response
+
+# Execute via CAEL with correlation tracking
+psi = PsiDefinition(
+    psi_type="ai.chat.gpt4",
+    domain="ai",
+    effect="external",
+    correlation_id=request.correlation_id,
+)
+trace = cael.execute(psi=psi, task=wrapped_ai_call, ctx=ctx, prompt=request.prompt)
+```
+
+Output: ExecutionTrace with timing, input/output hashes, and opaque correlation_id.
+
+**Execution Properties:**
+
+- All execution is isolated per request
+- Timeout enforcement via ExecutionPolicy
+- No direct operational authority for nondeterministic subsystems
+- Full trace capture via KL
+
+---
+
+### 5.4 Result Filter
+
+**Responsibility:** Validate and sanitize outputs before they reach operational systems.
+
+**Inputs:**
+- ExecutionTrace (from Execution Gate)
+- Expected output schema
+- Safety and compliance policies
+
+**Functions:**
+
+1. **Output schema validation:**
+   - Type checking (JSON Schema, Pydantic, etc.)
+   - Range and constraint validation
+   - Required field verification
+
+2. **Safety filters:**
+   - Secret detection (API keys, passwords, tokens)
+   - PII sanitization (email, SSN, phone numbers)
+   - Injection prevention (SQL, command, XSS)
+
+3. **Policy compliance:**
+   - Content policies (profanity, violence, hate speech)
+   - Data classification enforcement (public, internal, confidential)
+   - Regulatory constraints (GDPR, HIPAA, SOC2)
+
+4. **Consistency validation:**
+   - Output matches expected effect (pure function did not mutate state)
+   - Output is consistent with prior state or request
+   - No cross-tenant data leakage
+
+**Outputs:**
+- Validated result or rejection (ValidationResult)
+- Audit event (filter decision record)
+
+**Example:**
+
+```python
+from dbl import ResultFilter, ValidationResult
+
+filter = ResultFilter()
+result = filter.validate(
+    trace=trace,
+    schema=output_schema,
+    policies=compliance_policies,
+)
+
+if not result.valid:
+    raise ValidationError(result.reason)
+```
+
+---
+
+### 5.5 Audit Layer
+
+**Responsibility:** Record all boundary events in an immutable log.
+
+**Inputs:**
+- RequestEnvelope (from Query Mediator)
+- PolicyDecision (from Policy Sandbox)
+- ExecutionTrace (from Execution Gate)
+- ValidationResult (from Result Filter)
+
+**Functions:**
+
+1. **Event recording:**
+   - Append-only event storage
+   - Immutable audit trail
+   - Cryptographic signing (optional)
+
+2. **Correlation:**
+   - Link events across request lifecycle
+   - Support distributed tracing (trace_id, parent_trace_id, correlation_id)
+   - Aggregate events by user, tenant, session
+
+3. **Integration:**
+   - Export to SIEM (Splunk, ELK, etc.)
+   - Compliance reporting (SOC2, ISO 27001, etc.)
+   - Forensic analysis tools
+
+4. **Replay support:**
+   - Capture sufficient metadata for request reconstruction
+   - Enable policy replay (what would happen if policy changed?)
+   - Support causal analysis and debugging
+
+**Event Schema:**
+
+```python
+{
+  "event_id": "uuid",
+  "timestamp": "ISO 8601",
+  "event_type": "request|policy|execution|validation|response",
+  "trace_id": "uuid",
+  "correlation_id": "uuid",
+  "user_id": "str",
+  "tenant_id": "str",
+  "request_id": "str",
+  "psi_type": "str",
+  "domain": "str",
+  "effect": "str",
+  "policy_decision": {"allowed": bool, "reason": "str"},
+  "execution_result": {"success": bool, "runtime_ms": float, "policy_result": "str"},
+  "validation_result": {"valid": bool, "reason": "str"},
+  "metadata": {}
+}
+```
+
+**Integration with KL:**
+
+The Audit Layer records ExecutionTrace directly from KL:
+
+```python
+from kl_kernel_logic import ExecutionTrace
+
+audit.record_execution(trace=trace)
+
+# Audit captures:
+# - trace.trace_id, trace.parent_trace_id
+# - trace.psi.describe()
+# - trace.success, trace.runtime_ms, trace.policy_result
+# - trace.policy_decisions
+```
 
 ---
 
 ## 6. Integration Points
 
-The Deterministic Boundary Layer interacts with:
+DBL integrates with:
 
-- identity systems such as AD, AAD or WAM  
-- logging, observability and SIEM pipelines  
-- operational systems such as ERP and line of business applications  
-- on-prem and edge inference hardware  
-- security layers and policy engines  
-- distributed data systems and message buses  
+**Identity and Access:**
+- Active Directory (AD)
+- Azure Active Directory (AAD)
+- OAuth2 / OIDC providers
+- SAML identity providers
 
-The design is platform-neutral and compatible with hybrid on-prem and cloud deployments.
+**Logging and Observability:**
+- SIEM (Splunk, ELK, Datadog)
+- OpenTelemetry / Jaeger
+- CloudWatch / Azure Monitor
+- Custom audit backends
+
+**Operational Systems:**
+- ERP and line of business applications
+- Databases (SQL, NoSQL)
+- Message buses (Kafka, RabbitMQ)
+- File storage and object stores
+
+**Execution Substrates:**
+- KL Kernel Logic (deterministic execution)
+- AI model APIs (OpenAI, Anthropic, Azure OpenAI)
+- External services (REST, gRPC, GraphQL)
+- On-prem and edge inference hardware
+
+**Policy Engines:**
+- Open Policy Agent (OPA)
+- AWS Cedar
+- Custom rule engines
+- Embedded policy evaluation
 
 ---
 
 ## 7. Benefits
 
-- deterministic containment of non-deterministic behaviour  
-- improved auditability and accountability  
-- alignment with regulated and safety-critical environments  
-- clean separation between model output and system authority  
-- compatibility with hybrid and on-prem infrastructures  
-- incremental adoption inside existing environments  
+- **Deterministic containment** of nondeterministic behavior
+- **Clear separation** between model output and system authority
+- **Full auditability** for compliance and forensics
+- **Safe integration** into regulated infrastructure
+- **Incremental adoption** without replacing existing systems
+- **Platform-neutral** design for hybrid and on-prem deployments
 
 ---
 
 ## 8. Limitations
 
-- increased architectural complexity and operational overhead  
-- dependence on organisational governance and policy maturity  
-- does not provide model explainability  
-- does not replace or compete with large foundation models  
-- depends on a deterministic base infrastructure and identity layer  
+- **Increased complexity:** additional layer and operational overhead
+- **Governance dependency:** requires mature policy and compliance practices
+- **No model explainability:** DBL does not provide interpretability
+- **No model replacement:** DBL does not compete with foundation models
+- **Infrastructure dependency:** requires deterministic base layer and identity system
 
 ---
 
 ## 9. Next Steps
 
-The next iterations, from v1.2 toward v2.0, will refine:
+From v1.1 toward v2.0, refine:
 
-- policy evaluation models and conflict handling  
-- isolation mechanics between tenants, datasets and environments  
-- action signature schemas and provenance metadata  
-- ledger structure and query patterns  
-- risk scoring, escalation and override procedures  
-- integration templates for typical enterprise stacks  
-- operational safety procedures and runbooks  
+- Policy evaluation models and conflict resolution
+- Isolation mechanics (tenants, datasets, environments)
+- Action signature schemas and provenance metadata
+- Ledger structure and query patterns
+- Risk scoring, escalation, and override procedures
+- Integration templates for enterprise stacks
+- Operational runbooks and incident response
 
 ---
 
-## 10. Diagram
+## 10. Reference Implementation
 
-The following schematic illustrates the DBL components and their relationships.
+See [KL Kernel Logic](https://github.com/lukaspfisterch/kl-kernel-logic) for the deterministic execution substrate that DBL wraps with governance and audit.
+
+See [KL Execution Theory](https://github.com/lukaspfisterch/kl-execution-theory) for the minimal axioms (Δ, V, t, G, L) that DBL and KL implement.
+
+---
+
+## 11. Diagram
 
 ```text
-+---------------------------------------------------------------+
-|                    Deterministic Boundary Layer               |
-+---------------------------------------------------------------+
++-------------------------------------------------------------------+
+|                  Deterministic Boundary Layer (DBL)               |
++-------------------------------------------------------------------+
 
-                   [ 5.1 Query Mediation Layer ]
+                     [1. Query Mediator]
 +-------------------------------------------------------------------+
-| - Input normalisation                                             |
-| - Classification and routing                                      |
-| - Safety pre-filters                                              |
-| - Context binding                                                 |
-+-------------------------------------------------------------------+
-                              |
-                              v
-                       [ 5.2 Policy Sandbox ]
-+-------------------------------------------------------------------+
-| - Operational boundaries                                          |
-| - Permissions and rate limits                                    |
-| - Deterministic rule evaluation                                  |
-| - Context consistency checks                                     |
+| - Input validation and normalization                              |
+| - Request classification and routing                              |
+| - Identity binding (user_id, tenant_id)                           |
+| - Context construction (request_id, correlation_id)               |
 +-------------------------------------------------------------------+
                               |
                               v
-                  [ 5.3 Non-Deterministic Subsystem ]
+                      [2. Policy Sandbox]
 +-------------------------------------------------------------------+
-| - LLM, ML model, adaptive engine                                 |
-| - Non-deterministic behaviour                                    |
-| - No direct operational authority                                |
-+-------------------------------------------------------------------+
-                              |
-                              v
-                  [ 5.4 Result Verification Layer ]
-+-------------------------------------------------------------------+
-| - Schema and consistency checks                                  |
-| - Safety filters                                                 |
-| - Determinism guards                                             |
-| - Signature requirements                                         |
+| - Permission evaluation (RBAC, ABAC)                              |
+| - Boundary enforcement (network, filesystem, timeout)             |
+| - Rate limiting and quotas                                        |
+| - Context consistency checks                                      |
 +-------------------------------------------------------------------+
                               |
                               v
-                        [ 5.5 Action Gateway ]
+                      [3. Execution Gate]
 +-------------------------------------------------------------------+
-| - Zero direct model action                                       |
-| - Signed deterministic execution                                 |
-| - Quarantine and rollback paths                                  |
-| - Full audit of operational steps                                |
+| Path A: KL Kernel Logic (deterministic)                          |
+| Path B: Wrapped subsystem (nondeterministic AI, external API)    |
+| - Isolated execution per request                                  |
+| - Timeout enforcement via ExecutionPolicy                         |
+| - Full trace capture via KL                                       |
 +-------------------------------------------------------------------+
                               |
                               v
-                    [ 5.6 State and Audit Ledger ]
+                      [4. Result Filter]
 +-------------------------------------------------------------------+
-| - Immutable event record                                          |
-| - Traceability                                                    |
-| - Forensic reconstruction                                        |
-| - Lifecycle visibility                                           |
+| - Output schema validation                                        |
+| - Safety filters (secrets, PII, injections)                       |
+| - Policy compliance (content, data classification)                |
+| - Consistency validation                                          |
++-------------------------------------------------------------------+
+                              |
+                              v
+                      [5. Audit Layer]
++-------------------------------------------------------------------+
+| - Immutable append-only event log                                 |
+| - Correlation across request lifecycle                            |
+| - Integration with SIEM and compliance systems                    |
+| - Forensic reconstruction and replay support                      |
 +-------------------------------------------------------------------+
 
 External Integration Points:
- - Identity systems, for example AD, AAD, WAM
- - Logging and SIEM
- - Operational systems such as ERP and line of business
- - Security and policy engines
- - On-prem and edge inference nodes
+- Identity: AD, AAD, OAuth2, SAML
+- Logging: SIEM, OpenTelemetry, CloudWatch
+- Operational: ERP, databases, message buses
+- Execution: KL Kernel Logic, AI APIs, external services
+- Policy: OPA, Cedar, custom rule engines
+```
