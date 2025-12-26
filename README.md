@@ -36,7 +36,7 @@ G and L are separated. L constrains inputs and information flow, G decides.
   Projection-only interpretation of V (Phase, RunnerStatus).
 - **[dbl-policy](https://github.com/lukaspfisterch/dbl-policy)**
   Tenant scoped policy evaluation that emits DECISION events.
-- **[dbl-boundary-service](https://github.com/lukaspfisterch/dbl-boundary-service)** (start here, you are here)
+- **[dbl-boundary-service](https://github.com/lukaspfisterch/dbl-boundary-service)** (start here)
   Reference UI and service for boundary evaluation.
 - **[kl-semantic-logic](https://github.com/lukaspfisterch/kl-semantic-logic)** (planned)
   Planned semantic anchoring and reconstruction model.
