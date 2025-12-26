@@ -15,6 +15,9 @@
 - Decisions MUST be traceable to policy_id, policy_version, and tenant_id.
 - Audit trails MUST be reproducible from V without external state.
 
+## Relationship to Boundaries
+Governance defines the normative policy lifecycle and produces DECISION events, including versioning and default deny behavior. G MUST consume only authoritative inputs released by L and MUST NOT bypass boundary enforcement. See docs/GL_SEPARATION.md.
+
 ## Default failure modes
 - Missing or invalid inputs default to DENY.
 - Unknown policy version defaults to DENY.

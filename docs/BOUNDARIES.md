@@ -19,6 +19,9 @@
 - Observational fields MUST NOT influence governance decisions.
 - EXECUTION or PROOF events MUST NOT be used as inputs for policy outcomes.
 
+## Relationship to Governance
+Boundaries enforce information-flow constraints, including allowed context schema, non-observability, sanitization, output filtering, and isolation. L MUST NOT contain policy logic. See docs/GL_SEPARATION.md.
+
 ## Boundary enforcement rules
 - All decisions MUST be expressible as DECISION events in V.
 - Policy outcomes MUST be deterministic for identical authoritative inputs.

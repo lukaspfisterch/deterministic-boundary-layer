@@ -12,6 +12,11 @@
 - Enforce determinism and non-observability constraints across the stack.
 - Treat V as the sole authoritative execution record.
 
+## Normative contracts
+The normative contracts for separation, governance, and boundaries are defined in
+docs/GL_SEPARATION.md, docs/GOVERNANCE.md, and docs/BOUNDARIES.md. These files define
+the authoritative constraints for this layer and supersede legacy notes.
+
 ## What this layer is NOT
 - Not a task execution engine.
 - Not a policy evaluation engine (delegated to dbl-policy).
