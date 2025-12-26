@@ -36,9 +36,9 @@ Deterministic boundary and governance layer built on V as an append-only source 
 
 ## Documents
 
-- docs/ARCHITECTURE.md
-- docs/BOUNDARIES.md
-- docs/GOVERNANCE.md
-- docs/INTEGRATION.md
-- docs/THREAT_MODEL.md
-- docs/GL_SEPARATION.md
+- [ARCHITECTURE](docs/ARCHITECTURE.md)
+- [BOUNDARIES](docs/BOUNDARIES.md)
+- [GOVERNANCE](docs/GOVERNANCE.md)
+- [INTEGRATION](docs/INTEGRATION.md)
+- [THREAT_MODEL](docs/THREAT_MODEL.md)
+- [GL_SEPARATION](docs/GL_SEPARATION.md)
