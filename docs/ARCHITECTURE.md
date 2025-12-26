@@ -11,6 +11,7 @@
 - Orchestrate when and how policy decisions are produced and recorded.
 - Enforce determinism and non-observability constraints across the stack.
 - Treat V as the sole authoritative execution record.
+- Determinism and replay rely on boundary_version and boundary_config_hash as part of the reproducibility envelope.
 
 ## Normative contracts
 The normative contracts for separation, governance, and boundaries are defined in

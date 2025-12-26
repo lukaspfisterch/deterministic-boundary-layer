@@ -13,7 +13,7 @@
 ## Audit and compliance
 - All decisions MUST be recorded as DECISION events in V.
 - Decisions MUST be traceable to policy_id, policy_version, and tenant_id.
-- Audit trails MUST be reproducible from V without external state.
+- Audit trails MUST be reproducible from V without external state. boundary_version and boundary_config_hash, when recorded on INTENT events, are part of V and therefore not external state.
 
 ## Relationship to Boundaries
 Governance defines the normative policy lifecycle and produces DECISION events, including versioning and default deny behavior. G MUST consume only authoritative inputs released by L and MUST NOT bypass boundary enforcement. See docs/GL_SEPARATION.md.
