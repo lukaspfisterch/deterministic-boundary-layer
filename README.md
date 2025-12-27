@@ -33,15 +33,15 @@ DBL is an **architectural pattern**, not a policy framework and not a runtime.
 
 DBL distinguishes four core components:
 
-- **L — Boundaries**  
+- **L - Boundaries**  
   Admit and shape authoritative inputs deterministically.
   Boundaries constrain information flow but are not normative.
 
-- **G — Governance**  
+- **G - Governance**  
   Deterministically produces explicit DECISION events from authoritative inputs.
   Governance has no access to observational data.
 
-- **V — Event stream**  
+- **V - Event stream**  
   Append-only, immutable, totally ordered stream of events.
   DECISION events are the sole normative primitives.
 
@@ -50,6 +50,10 @@ DBL distinguishes four core components:
   Outputs, timing, errors, and traces are observational only.
 
 Only **V** is authoritative for normative replay.
+
+Read next: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+
+For L and G specifically: [docs/BOUNDARIES.md](docs/BOUNDARIES.md), [docs/GOVERNANCE.md](docs/GOVERNANCE.md)
 
 ---
 
@@ -69,6 +73,8 @@ Under DBL:
 
 Observational data must not influence governance unless explicitly admitted
 through a versioned boundary change.
+
+Read next: [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md)
 
 ---
 
@@ -128,6 +134,21 @@ Notes on authority and scope
 - dbl-paper defines DBL. Code repos do not redefine the model.
 - Repos are intentionally minimal and layered. "Listed here" does not mean "required".
 
+Read next: [docs/INTEGRATION.md](docs/INTEGRATION.md), [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md)
+
+---
+
+## Docs
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Layered model overview and roles.
+- [docs/BOUNDARIES.md](docs/BOUNDARIES.md) - Boundary admission rules and information flow constraints.
+- [docs/GOVERNANCE.md](docs/GOVERNANCE.md) - Governance lifecycle, versioning, and decision semantics.
+- [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md) - Formal separation of G and L responsibilities.
+- [docs/INTEGRATION.md](docs/INTEGRATION.md) - Integration flow across DBL layers and repositories.
+- [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) - Threat assumptions and failure modes.
+
+Legacy notes live in `docs/legacy/` and are non-normative.
+
 ---
 
 ## What DBL is not
@@ -141,7 +162,7 @@ DBL explicitly does **not** provide:
 - adaptive or learning-based policies
 - distributed consensus or availability guarantees
 
-If these assumptions are violated, DBL’s guarantees do not apply.
+If these assumptions are violated, DBL's guarantees do not apply.
 
 ---
 
