@@ -82,7 +82,7 @@ Read next: [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md)
 
 DBL is defined by its formal model and axioms. This repository is a conceptual entry point and navigation hub.
 
-Normative specification
+### Normative specification
 
 - **[deterministic-boundary-layer](https://github.com/lukaspfisterch/deterministic-boundary-layer)**  
   Landing page and conceptual hub (this repository).
@@ -91,7 +91,7 @@ Normative specification
   Formal specification of DBL: definitions, axioms, claims, proof sketches.  
   This is the normative reference for DBL.
 
-Core substrates
+### Core substrates
 
 - **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**  
   Reference implementation of V: append-only event stream, deterministic canonicalization,  
@@ -105,7 +105,7 @@ Core substrates
   Axiomatic foundation for Δ, V, and logical time. Provides the vocabulary and minimal contracts  
   that DBL builds on.
 
-DBL components and layering
+### DBL components and layering
 
 - **[dbl-core](https://github.com/lukaspfisterch/dbl-core)**  
   Boundary-adjacent evaluation components and shared primitives used by higher layers.  
@@ -119,7 +119,7 @@ DBL components and layering
   Composition layer wiring DBL components together (L, G, V integration) in a minimal,  
   reproducible manner. Intended as a reference composition, not an app.
 
-Reference applications
+### Reference applications
 
 - **[dbl-boundary-service](https://github.com/lukaspfisterch/dbl-boundary-service)**  
   Reference app demonstrating DBL-style invocation flow with explicit DECISION events and  
@@ -129,7 +129,7 @@ Reference applications
   Execution gateway and effector-facing integration. Demonstrates how to keep execution artifacts  
   observational while preserving replayability from V.
 
-Notes on authority and scope
+### Notes on authority and scope
 
 - dbl-paper defines DBL. Code repos do not redefine the model.
 - Repos are intentionally minimal and layered. "Listed here" does not mean "required".
