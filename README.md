@@ -93,6 +93,9 @@ DBL is defined by its formal model and axioms. This repository is a conceptual e
 
 ### Core substrates
 
+- **[execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)**  
+  Formal execution model that this layer builds on.
+
 - **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**  
   Reference implementation of V: append-only event stream, deterministic canonicalization,  
   event and stream digests, normative projection. Implements V only.
