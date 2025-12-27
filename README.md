@@ -2,9 +2,6 @@
 
 DBL is an architectural model for making normativity explicit and replayable under non-deterministic execution.
 
-Deterministic Boundary Layers (DBL) is an architectural model for governing
-non-deterministic systems with deterministic, auditable outcomes.
-
 DBL separates **normative decisions** from **execution** by construction:
 all normativity exists only as explicit **DECISION events** recorded in an
 append-only event stream, while execution outputs are treated as observational
