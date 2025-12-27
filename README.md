@@ -75,27 +75,59 @@ through a versioned boundary change.
 
 ## Repository map
 
-DBL is defined by its formal model and axioms.
-This repository serves as a conceptual entry point and navigation hub.
+DBL is defined by its formal model and axioms. This repository is a conceptual entry point and navigation hub.
 
-Authoritative and reference repositories:
+Normative specification
 
-- **dbl-paper**  
-  Formal specification of DBL, including definitions, axioms, claims,
-  and proof sketches. This is the normative reference for the model.
+- **[deterministic-boundary-layer](https://github.com/lukaspfisterch/deterministic-boundary-layer)**  
+  Landing page and conceptual hub (this repository).
 
-- **dbl-vlog**  
-  Reference-grade implementation of the DBL event stream **V**:
-  append-only log, deterministic canonicalization, event and stream digests,
-  and normative projection. Implements **V only**.
+- **[dbl-paper](https://github.com/lukaspfisterch/dbl-paper)**  
+  Formal specification of DBL: definitions, axioms, claims, proof sketches.  
+  This is the normative reference for DBL.
 
-Supporting and application-level repositories:
+Core substrates
 
-- **dbl-core**  
-  Boundary-adjacent evaluation logic and supporting components.
+- **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**  
+  Reference implementation of V: append-only event stream, deterministic canonicalization,  
+  event and stream digests, normative projection. Implements V only.
 
-- **dbl-boundary-service / execution gateways**  
-  Reference applications demonstrating DBL integration.
+- **[kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)**  
+  Kernel-level contracts and deterministic execution core concepts used by the ecosystem.  
+  Not DBL itself, but the execution-theoretic foundation DBL is designed to govern.
+
+- **[kl-execution-theory](https://github.com/lukaspfisterch/kl-execution-theory)**  
+  Axiomatic foundation for Δ, V, and logical time. Provides the vocabulary and minimal contracts  
+  that DBL builds on.
+
+DBL components and layering
+
+- **[dbl-core](https://github.com/lukaspfisterch/dbl-core)**  
+  Boundary-adjacent evaluation components and shared primitives used by higher layers.  
+  Scope: support for L/G wiring, not a full system.
+
+- **[dbl-policy](https://github.com/lukaspfisterch/dbl-policy)**  
+  Versioned, explicit policy artifacts used by governance (G).  
+  Scope: policy representation and release discipline, not execution.
+
+- **[dbl-main](https://github.com/lukaspfisterch/dbl-main)**  
+  Composition layer wiring DBL components together (L, G, V integration) in a minimal,  
+  reproducible manner. Intended as a reference composition, not an app.
+
+Reference applications
+
+- **[dbl-boundary-service](https://github.com/lukaspfisterch/dbl-boundary-service)**  
+  Reference app demonstrating DBL-style invocation flow with explicit DECISION events and  
+  observational separation. Useful for demos and practical integration examples.
+
+- **[kl-exec-gateway](https://github.com/lukaspfisterch/kl-exec-gateway)**  
+  Execution gateway and effector-facing integration. Demonstrates how to keep execution artifacts  
+  observational while preserving replayability from V.
+
+Notes on authority and scope
+
+- dbl-paper defines DBL. Code repos do not redefine the model.
+- Repos are intentionally minimal and layered. "Listed here" does not mean "required".
 
 ---
 
@@ -123,4 +155,3 @@ and auditability.
 This repository is stable as a conceptual and navigational entry point.
 
 ---
-
