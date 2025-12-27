@@ -1,5 +1,7 @@
 # Deterministic Boundary Layers (DBL)
 
+DBL is an architectural model for making normativity explicit and replayable under non-deterministic execution.
+
 Deterministic Boundary Layers (DBL) is an architectural model for governing
 non-deterministic systems with deterministic, auditable outcomes.
 
