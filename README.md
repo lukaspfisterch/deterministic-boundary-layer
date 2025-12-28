@@ -11,12 +11,25 @@ This repository is the **conceptual landing page** for DBL.
 
 ---
 
+## Conceptual foundation
+
+DBL is not a foundational execution theory.  
+DBL builds on a strictly non-normative execution substrate.  
+That substrate is defined in **Execution Without Normativity**:
+https://github.com/lukaspfisterch/execution-without-normativity
+
+DBL assumes execution semantics and does not redefine them.
+
+---
+
 ## Core idea
 
 DBL is built on a single central rule:
 
 > All normative effects must be expressed explicitly as DECISION events in an
 > append-only event stream **V**, independent of non-deterministic execution.
+
+This rule applies after execution semantics are fixed by the underlying non-normative substrate.
 
 From this rule follow the core guarantees of DBL:
 
@@ -82,31 +95,35 @@ Read next: [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md)
 
 DBL is defined by its formal model and axioms. This repository is a conceptual entry point and navigation hub.
 
-### Normative specification
+### Foundational theory
 
-- **[deterministic-boundary-layer](https://github.com/lukaspfisterch/deterministic-boundary-layer)**  
-  Landing page and conceptual hub (this repository).
+- **[execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)**  
+  Authoritative non-normative execution substrate. DBL builds on this and assumes its semantics.
+
+### Derived execution discipline (KL)
+
+- **[kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)**  
+  Concrete, stateless execution kernel and discipline aligned with the foundational substrate.  
+  Not DBL itself and not a competing theory.
+
+- **[kl-execution-theory](https://github.com/lukaspfisterch/kl-execution-theory)**  
+  Historical transitional axiomatic reference for KL concepts. Preserved for context.  
+  Superseded as a canonical foundation by Execution Without Normativity.
+
+### Architectural model (DBL)
 
 - **[dbl-paper](https://github.com/lukaspfisterch/dbl-paper)**  
   Formal specification of DBL: definitions, axioms, claims, proof sketches.  
   This is the normative reference for DBL.
 
-### Core substrates
+- **[deterministic-boundary-layer](https://github.com/lukaspfisterch/deterministic-boundary-layer)**  
+  Landing page and conceptual hub (this repository).
 
-- **[execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)**  
-  Formal execution model that this layer builds on.
+### Core substrates
 
 - **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**  
   Reference implementation of V: append-only event stream, deterministic canonicalization,  
   event and stream digests, normative projection. Implements V only.
-
-- **[kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)**  
-  Kernel-level contracts and deterministic execution core concepts used by the ecosystem.  
-  Not DBL itself, but the execution-theoretic foundation DBL is designed to govern.
-
-- **[kl-execution-theory](https://github.com/lukaspfisterch/kl-execution-theory)**  
-  Axiomatic foundation for Δ, V, and logical time. Provides the vocabulary and minimal contracts  
-  that DBL builds on.
 
 ### DBL components and layering
 
@@ -160,6 +177,7 @@ DBL explicitly does **not** provide:
 
 - policy correctness or ethical guarantees
 - execution determinism
+- execution semantics or a foundational execution theory
 - model alignment or training methods
 - post-execution filtering as governance
 - adaptive or learning-based policies
