@@ -128,6 +128,20 @@ This repository acts as a **conceptual entry point and navigation hub**.
 - **[deterministic-boundary-layer](https://github.com/lukaspfisterch/deterministic-boundary-layer)**  
   Conceptual landing page and navigation hub (this repository).
 
+### Reference semantics and validation
+
+- **[dbl-reference](https://github.com/lukaspfisterch/dbl-reference)**  
+  Reference-grade executable specification of DBL invariants.
+
+  Acts as a semantic oracle and regression anchor:
+  - validates DECISION primacy
+  - enforces observational non-interference
+  - defines normative replay and digest semantics
+  - detects semantic drift in higher-level implementations
+
+  This repository does not compose systems and does not provide infrastructure.
+  It exists to make the DBL axioms executable, testable, and falsifiable.
+
 ### Core substrates
 
 - **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**  
