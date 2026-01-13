@@ -1,5 +1,11 @@
 # Deterministic Boundary Layers (DBL)
 
+Reading guide:
+- To understand why DBL exists, read **Why this exists**.
+- For the formal model, read **Conceptual model**.
+- To explore implementations, go to **Navigation hub**.
+This repository is intentionally dense; it defines an architectural model, not a framework or tutorial.
+
 DBL is an architectural model for making **normativity explicit, replayable, and auditable**
 under non-deterministic execution.
 
