@@ -12,21 +12,34 @@ This repository is the **conceptual landing page** for DBL.
 
 ---
 
-## Conceptual foundation
+## Why this exists
+
+Non-deterministic systems often mix policy determinations with runtime effects, making
+authorization and accountability impossible to replay or audit. Once decisions are
+hidden inside execution, divergent runs cannot be reconciled, and there is no single
+source of truth for what was authorized or why. This model exists to require explicit,
+immutable decision records that precede execution so policy reasoning stays replayable,
+auditable, and isolated from observational noise.
+
+---
+
+## Conceptual model
+
+### Conceptual foundation
 
 DBL is **not** a foundational execution theory.
 
 DBL builds on a strictly **non-normative execution substrate**.
 That substrate is defined in **Execution Without Normativity**:
 
-→ https://github.com/lukaspfisterch/execution-without-normativity
+- https://github.com/lukaspfisterch/execution-without-normativity
 
 DBL assumes execution semantics and does not redefine them.
 All guarantees of DBL apply **after** execution semantics are fixed.
 
 ---
 
-## Core idea
+### Core idea
 
 DBL is built on a single central rule:
 
@@ -47,19 +60,19 @@ DBL is an **architectural pattern**, not a policy framework and not a runtime.
 
 ---
 
-## Model overview
+### Model overview
 
 DBL distinguishes four core components:
 
-- **L – Boundaries**  
+- **L - Boundaries**  
   Admit and shape authoritative inputs deterministically.  
   Boundaries constrain information flow but are not normative.
 
-- **G – Governance**  
+- **G - Governance**  
   Deterministically produces explicit **DECISION events** from authoritative inputs.  
   Governance has no access to observational data.
 
-- **V – Event stream**  
+- **V - Event stream**  
   Append-only, immutable, totally ordered stream of events.  
   **DECISION events are the sole normative primitives.**
 
@@ -76,7 +89,7 @@ Read next:
 
 ---
 
-## Normativity and observation
+### Normativity and observation
 
 Under DBL:
 
@@ -97,18 +110,47 @@ Read next: [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md)
 
 ---
 
-## Repository map
+### What DBL is not
+
+DBL explicitly does **not** provide:
+
+- policy correctness or ethical guarantees
+- execution determinism
+- execution semantics or a foundational execution theory
+- model alignment or training methods
+- post-execution filtering as governance
+- adaptive or learning-based policies
+- distributed consensus or availability guarantees
+
+If these assumptions are violated, DBL's guarantees do not apply.
+
+---
+
+### Status
+
+DBL is defined by its formal model and axioms.
+
+Implementations are intentionally minimal and layered to preserve
+determinism and auditability.
+
+This repository is stable as a **conceptual and navigational entry point**.
+
+---
+
+## Navigation hub
 
 DBL is defined by its formal model and axioms.
 This repository acts as a **conceptual entry point and navigation hub**.
 
-### Foundational theory
+### Repository map
+
+#### Foundational theory
 
 - **[execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)**  
   Authoritative non-normative execution substrate.  
   DBL builds on this and assumes its semantics.
 
-### Derived execution discipline (KL, non-normative)
+#### Derived execution discipline (KL, non-normative)
 
 - **[kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)**  
   Concrete, stateless execution kernel and discipline aligned with the foundational substrate.  
@@ -119,7 +161,7 @@ This repository acts as a **conceptual entry point and navigation hub**.
   Preserved for context. Superseded as a canonical foundation by
   *Execution Without Normativity*.
 
-### Architectural model (DBL)
+#### Architectural model (DBL)
 
 - **[dbl-paper](https://github.com/lukaspfisterch/dbl-paper)**  
   Formal specification of DBL: definitions, axioms, claims, and proof sketches.  
@@ -128,7 +170,7 @@ This repository acts as a **conceptual entry point and navigation hub**.
 - **[deterministic-boundary-layer](https://github.com/lukaspfisterch/deterministic-boundary-layer)**  
   Conceptual landing page and navigation hub (this repository).
 
-### Reference semantics and validation
+#### Reference semantics and validation
 
 - **[dbl-reference](https://github.com/lukaspfisterch/dbl-reference)**  
   Reference-grade executable specification of DBL invariants.
@@ -142,7 +184,7 @@ This repository acts as a **conceptual entry point and navigation hub**.
   This repository does not compose systems and does not provide infrastructure.
   It exists to make the DBL axioms executable, testable, and falsifiable.
 
-### Core substrates
+#### Core substrates
 
 - **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**  
   Reference implementation of **V**: append-only event stream,
@@ -150,7 +192,7 @@ This repository acts as a **conceptual entry point and navigation hub**.
   normative projection.  
   Implements **V only**.
 
-### DBL components and layering
+#### DBL components and layering
 
 - **[dbl-core](https://github.com/lukaspfisterch/dbl-core)**  
   Boundary-adjacent evaluation components and shared primitives
@@ -166,7 +208,10 @@ This repository acts as a **conceptual entry point and navigation hub**.
   (L, G, V integration).  
   Intended as a reference composition, not an application.
 
-### Reference Domainrunners (proof by construction)
+  - **[dbl-ingress](https://github.com/lukaspfisterch/dbl-ingress)**
+     
+
+#### Reference Domainrunners (proof by construction)
 
 - **[dbl-voting-registry](https://github.com/lukaspfisterch/dbl-voting-registry)**  
   Minimal reference Domainrunner demonstrating DBL invariants
@@ -180,52 +225,23 @@ This repository acts as a **conceptual entry point and navigation hub**.
 
   Scope: demonstration and auditability, not feature completeness.
 
-### Notes on authority and scope
+#### Notes on authority and scope
 
 - **dbl-paper defines DBL**. Code repositories do not redefine the model.
 - Repositories are intentionally minimal and layered.
-- “Listed here” does not mean “required”.
+- "Listed here" does not mean "required".
 
 Read next:
 - [docs/INTEGRATION.md](docs/INTEGRATION.md)
 - [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md)
 
----
+### Docs
 
-## Docs
-
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – Layered model overview and roles
-- [docs/BOUNDARIES.md](docs/BOUNDARIES.md) – Boundary admission rules and information flow constraints
-- [docs/GOVERNANCE.md](docs/GOVERNANCE.md) – Governance lifecycle, versioning, and decision semantics
-- [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md) – Formal separation of G and L responsibilities
-- [docs/INTEGRATION.md](docs/INTEGRATION.md) – Integration flow across DBL layers and repositories
-- [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) – Threat assumptions and failure modes
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Layered model overview and roles
+- [docs/BOUNDARIES.md](docs/BOUNDARIES.md) - Boundary admission rules and information flow constraints
+- [docs/GOVERNANCE.md](docs/GOVERNANCE.md) - Governance lifecycle, versioning, and decision semantics
+- [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md) - Formal separation of G and L responsibilities
+- [docs/INTEGRATION.md](docs/INTEGRATION.md) - Integration flow across DBL layers and repositories
+- [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) - Threat assumptions and failure modes
 
 Legacy notes live in `docs/legacy/` and are explicitly non-normative.
-
----
-
-## What DBL is not
-
-DBL explicitly does **not** provide:
-
-- policy correctness or ethical guarantees
-- execution determinism
-- execution semantics or a foundational execution theory
-- model alignment or training methods
-- post-execution filtering as governance
-- adaptive or learning-based policies
-- distributed consensus or availability guarantees
-
-If these assumptions are violated, DBL’s guarantees do not apply.
-
----
-
-## Status
-
-DBL is defined by its formal model and axioms.
-
-Implementations are intentionally minimal and layered to preserve
-determinism and auditability.
-
-This repository is stable as a **conceptual and navigational entry point**.
