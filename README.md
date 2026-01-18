@@ -214,8 +214,13 @@ This repository acts as a **conceptual entry point and navigation hub**.
   (L, G, V integration).  
   Intended as a reference composition, not an application.
 
-  - **[dbl-ingress](https://github.com/lukaspfisterch/dbl-ingress)**
-     
+  - **[dbl-ingress](https://github.com/lukaspfisterch/dbl-ingress)**  
+    Admission shaping and input canonicalization for ingress events.
+
+  - **[dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway)**  
+    Production-grade HTTP gateway implementing L, G, V integration  
+    with multiple LLM providers (OpenAI, Anthropic, Ollama).  
+    Exposes `/capabilities`, `/ingress`, `/tail`, `/snapshot` surfaces.
 
 #### Reference Domainrunners (proof by construction)
 
