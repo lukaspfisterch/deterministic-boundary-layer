@@ -1,5 +1,10 @@
 # Deterministic Boundary Layers (DBL)
 
+## Try the full DBL demo stack
+One command. Gateway, Observer and Chat UI running locally.
+→ https://github.com/lukaspfisterch/dbl-stack
+
+
 Reading guide:
 - To understand why DBL exists, read [**Why this exists**](#why-this-exists).
 - For the formal model, read [**Conceptual model**](#conceptual-model).
