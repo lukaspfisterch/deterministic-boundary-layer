@@ -3,7 +3,7 @@
 ## Purpose
 This contract defines the minimal, formal separation between Governance (G) and Boundaries (L)
 within a deterministic execution model.  
-It is **normative** for implementation, documentation, and architectural decisions.
+It is **authoritative** for implementation, documentation, and architectural decisions.
 
 ---
 
@@ -11,12 +11,12 @@ It is **normative** for implementation, documentation, and architectural decisio
 
 - All actions, decisions, and states are grounded exclusively in **V (Behavior)**.
 - Neither Governance (G) nor Boundaries (L) may rely on implicit, hidden, or external assumptions.
-- Any **normative** effect MUST be visible in V or explicitly justified by V.
-- Deterministic **constraint enforcement** that does not introduce normative outcomes MAY operate
+- Any **authoritative** effect MUST be visible in V or explicitly justified by V.
+- Deterministic **constraint enforcement** that does not introduce authoritative outcomes MAY operate
   without emitting events.
 
 Clarification:
-- *Normative* means: deciding what is allowed, forbidden, or required.
+- *Authoritative* means: deciding what is allowed, forbidden, or required.
 - *Constraint enforcement* means: restricting admissible information or flows without deciding outcomes.
 
 ---
@@ -24,12 +24,12 @@ Clarification:
 ## 2. Governance (G)
 
 ### Definition
-Governance (G) is the **normative layer**.  
+Governance (G) is the **authoritative layer**.  
 It determines *what* is allowed, forbidden, or required.
 
 ### Responsibilities of G
 - G produces **DECISION** events in V.
-- Each normative decision MUST be visible in V, including:
+- Each authoritative decision MUST be visible in V, including:
   - `policy_id`
   - `policy_version`
   - `tenant_id`
@@ -40,7 +40,7 @@ It determines *what* is allowed, forbidden, or required.
 - G follows a **default-deny** principle unless explicitly overridden.
 
 ### Not allowed
-- G MUST NOT make observational data normative.
+- G MUST NOT make observational data authoritative.
 - G MUST NOT define or enforce information-flow constraints.
 - G MUST NOT bypass or weaken Boundary rules defined by L.
 
@@ -64,13 +64,13 @@ They determine *which information* may enter decisions and *which outputs* may p
   - L MAY reject, truncate, mask, normalize, or shape inputs.
   - L MAY block or filter outputs.
 - L MAY apply deterministic input or output transformations **without emitting events**,
-  as long as no normative outcome is introduced outside V.
-- L is **not normative in content**:
+  as long as no authoritative outcome is introduced outside V.
+- L is **not authoritative in content**:
   - L does not decide *what should happen*.
   - L decides only *what information is admissible*.
 
 ### Not allowed
-- L MUST NOT make normative decisions.
+- L MUST NOT make authoritative decisions.
 - L MUST NOT contain policy or business logic.
 - L MUST NOT derive decisions from execution outcomes or observational data.
 - L MUST NOT depend on derived or projected state (e.g. Phase, RunnerStatus).
@@ -84,13 +84,13 @@ They determine *which information* may enter decisions and *which outputs* may p
   - Released and shaped by L before reaching G.
 - **Observational data**:
   - Telemetry, traces, debug output, logs, runtime measurements.
-  - These MUST NOT become normative.
+  - These MUST NOT become authoritative.
 - L MUST ensure:
   - G cannot directly consume observational data.
-  - Only authoritative inputs reach normative decision logic.
+  - Only authoritative inputs reach authoritative decision logic.
 
 Principle:
-> If data depends on non-deterministic execution behavior, it is observational and non-normative.
+> If data depends on non-deterministic execution behavior, it is observational and non-authoritative.
 
 ---
 
@@ -100,7 +100,7 @@ Principle:
 - boundary_version SHOULD be recorded as authoritative metadata on admitted INTENT events.
 - boundary_config_hash SHOULD be recordable alongside boundary_version as a deterministic hash over canonicalized boundary config.
 - Any change to L that alters which inputs can reach G or how inputs are shaped (mask, normalize, truncate) SHOULD bump boundary_version and change boundary_config_hash.
-- boundary_version is not a normative decision and MUST NOT imply allow or deny semantics.
+- boundary_version is not an authoritative decision and MUST NOT imply allow or deny semantics.
 
 Rationale: reproducibility depends on (policy_version, boundary_version, boundary_config_hash).
 
@@ -114,7 +114,7 @@ Rationale: reproducibility depends on (policy_version, boundary_version, boundar
   - validity
   - invalidity
   - consistency or sequencing violations
-- Projections are **descriptive**, not normative:
+- Projections are **descriptive**, not authoritative:
   - They do not enforce.
   - They do not modify V.
 - Enforcement occurs only through **future actions** of G or L,
@@ -129,7 +129,7 @@ two explicitly separated modules are maintained:
 
 ### Module G (Governance)
 - Policy lifecycle management
-- Normative DECISION logic
+- Authoritative DECISION logic
 - Tenant scoping
 - Policy versioning
 - Default-deny semantics

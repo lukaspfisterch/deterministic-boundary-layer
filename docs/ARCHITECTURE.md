@@ -13,8 +13,8 @@
 - Treat V as the sole authoritative execution record.
 - Determinism and replay rely on boundary_version and boundary_config_hash as part of the reproducibility envelope.
 
-## Normative contracts
-The normative contracts for separation, governance, and boundaries are defined in
+## Authoritative contracts
+The authoritative contracts for separation, governance, and boundaries are defined in
 docs/GL_SEPARATION.md, docs/GOVERNANCE.md, and docs/BOUNDARIES.md. These files define
 the authoritative constraints for this layer and supersede legacy notes.
 
