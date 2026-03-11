@@ -1,5 +1,7 @@
 # Governance
 
+Governance is the process that converts admitted inputs into explicit DECISION events. It is authoritative only through those decisions, never through execution output.
+
 ## Policy lifecycle
 - Each policy MUST have policy_id and policy_version.
 - A policy update that changes decisions for identical inputs is a breaking change.
@@ -17,6 +19,9 @@
 
 ## Relationship to Boundaries
 Governance defines the authoritative policy lifecycle and produces DECISION events, including versioning and default deny behavior. G MUST consume only authoritative inputs released by L and MUST NOT bypass boundary enforcement. See docs/GL_SEPARATION.md.
+
+## Replay guarantee
+- Identical admitted inputs evaluated under the same policy_id and policy_version MUST produce the same DECISION outcome.
 
 ## Default failure modes
 - Missing or invalid inputs default to DENY.

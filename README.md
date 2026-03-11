@@ -1,206 +1,145 @@
 # Deterministic Boundary Layers (DBL)
 
-Reading guide:
-- To understand why DBL exists, read [**Why this exists**](#why-this-exists).
-- For the architectural model, read [**Core model**](#core-model).
-- To explore implementations, go to [**Repository map**](#repository-map).
+DBL is an experimental architecture and reference implementation for deterministic governance over non-deterministic systems.
 
-DBL is an architectural model that makes **governance authority explicit, replayable, and auditable**
-under non-deterministic execution.
+It is not a product suite. It is a coded articulation of a model: a way to make governance explicit, replayable, and auditable without treating execution output as authority.
 
-DBL separates **authoritative decisions** from **execution** by construction:
-all governance authority exists only as explicit **DECISION events** recorded in an
-append-only event stream, while execution outputs are treated as observational only.
+This repository is the conceptual landing page for that architecture.
 
-This repository is the **conceptual landing page** for DBL.
+> Only DECISION events are authoritative. Execution output never influences policy.
 
----
+## Why DBL exists
 
-## Why this exists
+Non-deterministic systems often collapse policy, execution, and observation into one runtime path. Once that happens, it becomes unclear what was authorized, why it was authorized, and whether the same decision could be replayed under the same rules.
 
-Non-deterministic systems often mix policy decisions with runtime effects, making
-authorization and accountability impossible to replay or audit. Once decisions are
-hidden inside execution, divergent runs cannot be reconciled, and there is no single
-source of truth for what was authorized or why.
+DBL addresses that problem by separating governance from execution by construction. Policy becomes explicit. Decisions become append-only records. Execution remains observational.
 
-DBL requires explicit, immutable decision records that precede execution.
-Policy reasoning stays replayable, auditable, and isolated from observational noise.
+## What this repository is
 
----
+deterministic-boundary-layer is not the runtime system itself. It is the architecture hub for the model.
 
-## Core model
+Its role is to explain:
 
-### Foundation
+- what DBL is
+- how the layers relate to each other
+- where authority lives
+- why execution and governance must remain separate
 
-DBL is **not** an execution theory.
+If you want the formal model, start with dbl-paper. If you want the runtime path, follow the stack from kl-kernel-logic to dbl-gateway.
 
-DBL builds on a strictly **observational execution substrate**.
-That substrate is defined in **Execution Without Normativity**:
+## Architecture
 
-- https://github.com/lukaspfisterch/execution-without-normativity
+DBL can be understood as a layered stack:
 
-DBL assumes execution semantics and does not redefine them.
-All guarantees of DBL apply **after** execution semantics are fixed.
+```text
+Theory
+|
+|- execution-without-normativity
+`- dbl-paper
 
----
+Execution substrate
+|
+`- kl-kernel-logic
 
-### Core rule
+Governance trace
+|
+|- dbl-core
+`- dbl-vlog
 
-> All authoritative effects must be expressed as explicit **DECISION events**
-> in an append-only event stream **V**, independent of non-deterministic execution.
+Governance evaluation
+|
+|- dbl-policy
+`- deterministic-boundary-layer
 
-This rule applies once execution semantics are already defined by the
-underlying observational substrate.
+Runtime integration
+|
+`- dbl-gateway
 
-From this rule follow the core guarantees:
+Applications and experiments
+|
+|- axi
+|- dbl-observer
+|- dbl-chat-client
+|- dbl-stack
+`- domain runners
+```
 
-- deterministic governance under non-deterministic execution
-- observational non-interference
-- replayable and auditable decision state
-- strict separation of admission, decision, and execution
+The architecture is intentionally narrow at the center. Most repositories are supporting experiments, interfaces, or demonstrations around a much smaller core.
 
-DBL is an **architectural pattern**, not a policy framework and not a runtime.
+## Core components
 
----
+The minimal DBL architecture is expressed through four functional blocks.
 
-### Components
+- [kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)
+  Deterministic execution substrate. It executes; it does not decide.
 
-DBL defines four components:
+- [dbl-core](https://github.com/lukaspfisterch/dbl-core) and [dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)
+  Governance trace substrate. They define and record the append-only event stream V with INTENT, DECISION, EXECUTION, and PROOF events.
 
-- **L — Boundaries**
-  Admit and shape authoritative inputs deterministically.
-  Boundaries constrain information flow but do not make decisions.
+- [dbl-policy](https://github.com/lukaspfisterch/dbl-policy)
+  Explicit governance evaluation. It produces DECISION events from admitted inputs.
 
-- **G — Governance**
-  Produces explicit **DECISION events** from authoritative inputs.
-  Governance has no access to observational data.
+- [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway)
+  Reference runtime integration. It connects intent ingestion, policy evaluation, execution, and trace writing.
 
-- **V — Event stream**
-  Append-only, immutable, totally ordered stream of events.
-  **DECISION events are the sole authoritative primitives.**
+## Theory and specification
 
-- **Execution / Effectors**
-  Execute actions after decisions are made.
-  Outputs, timing, errors, and traces are observational only.
+The architecture depends on a prior execution model and a separate formal specification.
 
-Only **V** is authoritative for decision replay.
+- [execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)
+  Foundational execution model. Defines the observational substrate on which DBL depends.
 
-Read next:
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [docs/BOUNDARIES.md](docs/BOUNDARIES.md)
-- [docs/GOVERNANCE.md](docs/GOVERNANCE.md)
+- [dbl-paper](https://github.com/lukaspfisterch/dbl-paper)
+  Formal DBL specification. This is the authoritative statement of the model.
 
----
+- [dbl-reference](https://github.com/lukaspfisterch/dbl-reference)
+  Executable invariant validator and replay oracle for the architecture.
 
-### Decisions and observations
+Code does not define DBL on its own. The model is specified separately and then pressure-tested through implementations.
 
-Under DBL:
+## Authority model
 
-- **Authoritative**
-  - DECISION events only
+Under DBL, not all events have the same status.
 
-- **Contextual**
-  - INTENT events (establish input context, not authoritative)
+- DECISION events are authoritative.
+- INTENT events establish context but are not authoritative.
+- EXECUTION and PROOF events are observational.
 
-- **Observational**
-  - EXECUTION and PROOF events
-  - outputs, traces, timing, errors, metrics
+Outputs, traces, timing, errors, and metrics must not influence governance unless they are explicitly admitted through a versioned boundary change.
 
-Observational data must not influence governance unless explicitly admitted
-through a versioned boundary change.
+This is the core separation behind the architecture: execution may be non-deterministic, but governance remains explicit and replayable.
 
-Read next: [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md)
+## What DBL is not
 
----
+DBL is not:
 
-### What DBL is not
+- a product suite
+- a generic policy engine
+- an execution theory
+- a claim that execution itself is deterministic
+- a substitute for formal correctness or ethics
+- a post-hoc filtering scheme over runtime outputs
 
-DBL does **not** provide:
+## Ecosystem
 
-- policy correctness or ethical guarantees
-- execution determinism
-- execution semantics or a foundational execution theory
-- model alignment or training methods
-- post-execution filtering as governance
-- adaptive or learning-based policies
-- distributed consensus or availability guarantees
+The wider repository set exists to explore, demonstrate, or operationalize the model. These repositories are useful, but they are not the architecture itself.
 
----
+- [dbl-observer](https://github.com/lukaspfisterch/dbl-observer)
+  Audit and timeline tooling for the event stream.
 
-## Repository map
+- [dbl-chat-client](https://github.com/lukaspfisterch/dbl-chat-client)
+  Event-projection chat interface.
 
-### Foundational theory
+- [dbl-stack](https://github.com/lukaspfisterch/dbl-stack)
+  Integrated stack for local end-to-end operation.
 
-- **[execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)**
-  Authoritative execution substrate.
-  DBL builds on this and assumes its semantics.
+- [axi](https://github.com/lukaspfisterch/axi)
+  Example system built around DBL ideas.
 
-### Execution kernel
+- Domain runners and other application repositories
+  Experimental implementations of the architecture in concrete domains.
 
-- **[kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)**
-  Stateless execution kernel derived from the foundational substrate.
-  Provides deterministic execution traces consumed by higher layers.
-
-### Specification
-
-- **[dbl-paper](https://github.com/lukaspfisterch/dbl-paper)**
-  Formal specification: definitions, axioms, claims, and proof sketches.
-  This is the **authoritative reference** for DBL.
-
-### Reference validation
-
-- **[dbl-reference](https://github.com/lukaspfisterch/dbl-reference)**
-  Executable specification of DBL invariants.
-  Validates decision primacy, observational non-interference,
-  decision replay, and digest semantics.
-
-### Core substrates
-
-- **[dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)**
-  Reference implementation of **V**: append-only event stream,
-  deterministic canonicalization, event and stream digests.
-
-- **[dbl-core](https://github.com/lukaspfisterch/dbl-core)**
-  Event substrate and shared governance primitives
-  used by higher layers. Support for L/G wiring.
-
-- **[dbl-policy](https://github.com/lukaspfisterch/dbl-policy)**
-  Versioned, explicit policy artifacts used by governance (G).
-
-### Integration
-
-- **[dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway)**
-  Reference integration implementation. HTTP gateway with
-  multiple LLM providers (OpenAI, Anthropic, Ollama).
-  Exposes `/capabilities`, `/ingress`, `/tail`, `/snapshot`.
-
-- **[dbl-stack](https://github.com/lukaspfisterch/dbl-stack)**
-  One-command full-stack setup (Gateway, Observer, Chat UI).
-
-### Observation and UI
-
-- **[dbl-observer](https://github.com/lukaspfisterch/dbl-observer)**
-  Timeline and audit UI for the event stream.
-
-- **[dbl-chat-client](https://github.com/lukaspfisterch/dbl-chat-client)**
-  Event-projection chat UI.
-
-### Reference domainrunner
-
-- **[dbl-voting-registry](https://github.com/lukaspfisterch/dbl-voting-registry)**
-  Demonstrates DBL invariants in a concrete domain:
-  strict PROOF/DECISION separation, observational non-interference,
-  replayable decision state, deterministic behavior under non-deterministic checks.
-
-### Notes
-
-- **dbl-paper defines DBL.** Code repositories do not redefine the model.
-- Repositories are intentionally minimal and layered.
-- "Listed here" does not mean "required."
-
----
-
-## Docs
+## Documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Layered model overview and component roles
 - [docs/BOUNDARIES.md](docs/BOUNDARIES.md) — Boundary admission rules and information flow
@@ -208,5 +147,6 @@ DBL does **not** provide:
 - [docs/GL_SEPARATION.md](docs/GL_SEPARATION.md) — Separation of G and L responsibilities
 - [docs/INTEGRATION.md](docs/INTEGRATION.md) — Integration flow across layers and repositories
 - [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) — Threat assumptions and failure modes
+- [docs/CONSTITUTION.md](docs/CONSTITUTION.md) — Minimal constitutional statement of the architecture
 
-Legacy notes live in `docs/legacy/` and are explicitly non-authoritative.
+Legacy notes in docs/legacy/ are historical and non-authoritative.

@@ -1,5 +1,9 @@
 # Boundaries
 
+A boundary is the admission point at which information may enter governance evaluation. It constrains what may pass from a non-deterministic process into authoritative decision-making.
+
+Boundaries are admission control, not policy logic.
+
 ## Boundary definitions
 - Inbound boundary: inputs accepted for policy evaluation and decision recording.
 - Outbound boundary: outputs emitted as DECISION events in V.
@@ -25,4 +29,5 @@ Boundaries enforce information-flow constraints, including allowed context schem
 ## Boundary enforcement rules
 - All decisions MUST be expressible as DECISION events in V.
 - Policy outcomes MUST be deterministic for identical authoritative inputs.
+- A boundary change that admits new observational data into governance MUST be explicit, versioned, and replay-safe.
 - Any violation of boundary rules is a governance failure.
