@@ -8,11 +8,11 @@ This repository is the conceptual landing page for that architecture.
 
 > Only DECISION events are authoritative. Execution output never influences policy.
 
-## Why this exists
+## Structural premise
 
-Most systems mix policy, execution, and observation into one runtime path. Once that happens, authority becomes implicit. You can no longer tell what was a decision and what was a side effect.
+Policy, execution, and observation are often entangled in the same runtime path. When this happens, authority becomes implicit: it is no longer clear what was decided and what merely occurred during execution.
 
-DBL exists because I wanted a model where that distinction is structural, not conventional. Policy is explicit. Decisions are append-only records. Execution remains observational.
+DBL defines a structure where this distinction is explicit. Policy is represented as append-only decision events. Execution remains observational.
 
 ## Architecture
 
