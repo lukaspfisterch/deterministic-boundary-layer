@@ -8,6 +8,29 @@ This repository is the conceptual landing page for that architecture.
 
 > Only DECISION events are authoritative. Execution output never influences policy.
 
+## DBL governance stack
+
+```text
+execution mechanics
+    -> dbl-core
+
+normative boundary
+    -> dbl-policy
+
+governance algebra
+    -> dbl-policy-gates
+
+domain governance
+    -> tenant policies
+```
+
+Execution happens.
+Decisions are recorded.
+Policies are assembled.
+
+`execution-without-normativity` shows that execution can exist without governance.
+`dbl-policy-gates` shows how governance can be made composable, replayable, and structurally comparable.
+
 ## Structural premise
 
 Policy, execution, and observation are often entangled in the same runtime path. When this happens, authority becomes implicit: it is no longer clear what was decided and what merely occurred during execution.
@@ -35,13 +58,13 @@ The reference implementation is a stack, not a single repository.
 theory
 execution-without-normativity
 
-event substrate
+execution mechanics
 dbl-core
 
-policy contract
+normative boundary
 dbl-policy
 
-policy algebra
+governance algebra
 dbl-policy-gates
 
 runtime reference
@@ -57,7 +80,7 @@ The current reference stack is:
 - `dbl-core 0.3.6`
 - `dbl-policy 0.3.1`
 - `dbl-policy-gates 0.1.1`
-- `dbl-gateway 0.9.7`
+- `dbl-gateway 0.9.8`
 
 ## Authority model
 
@@ -79,15 +102,6 @@ Execution may be non-deterministic. Governance remains explicit and replayable.
 - a claim that execution itself is deterministic
 - a substitute for formal correctness or ethics
 - a post-hoc filtering scheme over runtime outputs
-
-## Ecosystem
-
-These repositories explore, demonstrate, or operationalize the model. They are useful, but they are not the architecture itself.
-
-- [dbl-observer](https://github.com/lukaspfisterch/dbl-observer) -- Audit and timeline tooling
-- [dbl-chat-client](https://github.com/lukaspfisterch/dbl-chat-client) -- Event-projection chat interface
-- [dbl-stack](https://github.com/lukaspfisterch/dbl-stack) -- Integrated local stack
-- [axi](https://github.com/lukaspfisterch/axi) -- Example system built around DBL ideas
 
 ## Documentation
 
