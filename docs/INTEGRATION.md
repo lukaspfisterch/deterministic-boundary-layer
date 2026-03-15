@@ -1,15 +1,36 @@
 # Integration
 
 ## Dependencies
-- deterministic-boundary-layer depends on dbl-policy, dbl-core, and dbl-main.
+- execution-without-normativity defines the theory prior to code.
+- dbl-core depends on kl-kernel-logic for execution substrate mechanics.
 - dbl-policy depends on dbl-core.
+- dbl-policy-gates depends on dbl-policy.
+- dbl-gateway depends on dbl-core, dbl-policy, dbl-main, and dbl-ingress.
 - dbl-main depends on dbl-core.
-- No component depends on kl-kernel-logic directly in this layer.
 
 ## Direction of flow
 - Authoritative inputs -> dbl-policy -> PolicyDecision.
+- Gate structure -> dbl-policy-gates -> root policy assembly.
 - PolicyDecision -> dbl-core DECISION event appended to V.
 - V -> dbl-main projection -> Phase, RunnerStatus.
+- dbl-gateway ties the path together at runtime without owning policy semantics.
+
+## Reference implementation path
+
+The shortest implementation path from theory to runtime is:
+
+1. `execution-without-normativity`
+2. `dbl-core`
+3. `dbl-policy`
+4. `dbl-policy-gates`
+5. `dbl-gateway`
+
+## Reference versions
+
+- `dbl-core 0.3.6`
+- `dbl-policy 0.3.1`
+- `dbl-policy-gates 0.1.1`
+- `dbl-gateway 0.9.7`
 
 ## Event flow examples
 

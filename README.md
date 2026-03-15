@@ -21,10 +21,43 @@ The architecture answers three different questions at three layers:
 | Layer | Question | Repositories |
 |-------|----------|-------------|
 | **Theory** | What must be true for deterministic governance to be possible? | [execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity), [dbl-paper](https://github.com/lukaspfisterch/dbl-paper) |
-| **Core** | How is that structure technically guaranteed? | [kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic), [dbl-core](https://github.com/lukaspfisterch/dbl-core), [dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog), [dbl-policy](https://github.com/lukaspfisterch/dbl-policy) |
+| **Core** | How is that structure technically guaranteed? | [kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic), [dbl-core](https://github.com/lukaspfisterch/dbl-core), [dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog) |
+| **Governance** | How are explicit decisions represented and assembled? | [dbl-policy](https://github.com/lukaspfisterch/dbl-policy), [dbl-policy-gates](https://github.com/lukaspfisterch/dbl-policy-gates) |
 | **Runtime** | How does this work in practice? | [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway), [dbl-reference](https://github.com/lukaspfisterch/dbl-reference) |
 
 The full layer diagram is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Reference Implementation
+
+The reference implementation is a stack, not a single repository.
+
+```text
+theory
+execution-without-normativity
+
+event substrate
+dbl-core
+
+policy contract
+dbl-policy
+
+policy algebra
+dbl-policy-gates
+
+runtime reference
+dbl-gateway
+```
+
+This is the shortest path from the theory to a running system.
+
+## Reference Versions
+
+The current reference stack is:
+
+- `dbl-core 0.3.6`
+- `dbl-policy 0.3.1`
+- `dbl-policy-gates 0.1.1`
+- `dbl-gateway 0.9.7`
 
 ## Authority model
 

@@ -29,9 +29,16 @@ Governance trace
 |- dbl-core
 `- dbl-vlog
 
-Governance evaluation
+Policy contract
 |
-|- dbl-policy
+`- dbl-policy
+
+Policy algebra
+|
+`- dbl-policy-gates
+
+Governance architecture
+|
 `- deterministic-boundary-layer
 
 Runtime integration
@@ -76,20 +83,38 @@ Its job is not to interpret policy but to preserve a deterministic, replayable, 
 
 Only the authoritative parts of V matter for governance replay.
 
-## Governance evaluation
+## Policy contract
 
-Governance evaluation is represented by dbl-policy together with the architectural rules described in this repository.
+The policy contract is represented by dbl-policy.
 
-- dbl-policy evaluates admitted inputs and produces explicit DECISION outcomes.
-- deterministic-boundary-layer defines the rules that constrain what inputs may be admitted, how governance remains isolated from observation, and how reproducibility is preserved.
+- dbl-policy defines the deterministic decision protocol.
+- It owns the contract surface for `PolicyContext`, `PolicyDecision`, validation, and bridging into DECISION events.
 
-This layer exists to keep authority explicit. It is where policy is evaluated, versioned, and constrained. It is not where execution is performed.
+This layer exists to make explicit decisions portable, typed, and replayable.
+
+## Policy algebra
+
+The policy algebra is represented by dbl-policy-gates.
+
+- dbl-policy-gates defines atomic gates and combinators.
+- It keeps governance structure composable without introducing a rule engine.
+- It is where gate trees are assembled before being wrapped as root policies.
+
+This layer is still governance, but not runtime.
+
+## Governance architecture
+
+The governance architecture is described in deterministic-boundary-layer.
+
+- deterministic-boundary-layer defines the rules that constrain authoritative input.
+- It explains how governance remains isolated from observation.
+- It explains how the repositories fit together as one architecture.
 
 ## Runtime integration
 
 Runtime integration is represented by dbl-gateway.
 
-This is the operational entry point that ties the layers together. It accepts intent, invokes governance, records decisions, executes actions, and writes observational events.
+This is the reference runtime implementation of the DBL execution boundary. It accepts intent, invokes governance, records decisions, executes actions, and writes observational events.
 
 The runtime may orchestrate the path, but it must not collapse the distinction between decision and execution.
 
@@ -113,7 +138,7 @@ Outputs, traces, timing, errors, and telemetry must not affect policy unless the
 
 ## Role of this repository
 
-deterministic-boundary-layer is the architecture hub for the governance layer.
+deterministic-boundary-layer is the architecture hub for the governance stack.
 
 Its role is to:
 
