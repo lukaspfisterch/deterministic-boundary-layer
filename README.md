@@ -116,6 +116,8 @@ This repository sits above these components as the architectural map.
 ## Start here
 
 - [docs/MANIFEST.md](docs/MANIFEST.md)
+- [docs/WHY_EXPLICIT_DECISIONS.md](docs/WHY_EXPLICIT_DECISIONS.md)
+- [docs/SEE_IT_WORK.md](docs/SEE_IT_WORK.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [docs/BOUNDARIES.md](docs/BOUNDARIES.md)
 - [docs/GOVERNANCE.md](docs/GOVERNANCE.md)

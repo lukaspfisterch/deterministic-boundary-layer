@@ -4,6 +4,8 @@
 
 - Reworked the repository landing page into a clearer jump surface for the DBL architecture
 - Tightened the landing page wording and repo map so the public entry surface reads more directly
+- Added `docs/WHY_EXPLICIT_DECISIONS.md` as a short explanation of the core DBL move
+- Added `docs/SEE_IT_WORK.md` as a concrete inspection path through one DBL request
 - Turned `docs/MANIFEST.md` into a start-here navigation page instead of a flat file list
 - Added a public `Selected Research Notes` surface with redacted empirical notes
 

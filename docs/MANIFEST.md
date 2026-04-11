@@ -9,6 +9,12 @@ Use it in this order.
 - [../README.md](../README.md)
   What DBL is, what it is not, and why explicit DECISION events matter.
 
+- [WHY_EXPLICIT_DECISIONS.md](WHY_EXPLICIT_DECISIONS.md)
+  Why DBL treats explicit decisions as the core architectural move.
+
+- [SEE_IT_WORK.md](SEE_IT_WORK.md)
+  How to inspect one request and see the DBL chain in practice.
+
 ## 2. Core structure
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
