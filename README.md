@@ -125,6 +125,21 @@ This repository sits above these components as the architectural map.
 
 ---
 
+## Active Boundary Topics
+
+Current implementation work at the runtime boundary is mainly concentrated around:
+
+- exposure modes
+- identity mapping
+- tool-family gating
+- request shaping
+- economic shaping
+
+Those topics belong to the live boundary surface, not to the architectural core.
+For the concrete runtime shape, see [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway).
+
+---
+
 ## Selected research notes
 
 This repository exposes a small public research surface.
