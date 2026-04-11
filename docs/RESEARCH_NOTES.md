@@ -29,7 +29,7 @@ They show what is being measured, compared, and stress-tested before anything is
 | [Guard Models](research-notes/guard-models.md) | hypothesis | explicit guard/exit modeling over a narrow continuation family |
 | [Invalidation Reducers](research-notes/invalidation-reducers.md) | observation | which conditions reduce early invalidation inside a promising family |
 
-## Why this is here
+## Why this should be here
 
 DBL claims are architectural.
 Architecture gets stronger when it can point to measured cases instead of only theory.
