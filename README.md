@@ -1,114 +1,145 @@
-# Deterministic Boundary Layers (DBL)
+# Deterministic Boundary Layers
 
-What must exist for governance over non-deterministic systems to be explicit, replayable, and auditable?
+Make governance explicit.
 
-DBL is an attempt to answer that question structurally. It separates governance from execution by construction, so that what was decided, why it was decided, and whether the same decision would be reached again are never ambiguous.
+`deterministic-boundary-layer` is the public jump page for the DBL architecture.
+It explains where authority lives, how the repositories fit together, and why explicit DECISION events matter under non-deterministic execution.
 
-This repository is the conceptual landing page for that architecture.
+---
 
-> Only DECISION events are authoritative. Execution output never influences policy.
+## The problem
 
-## DBL governance stack
+Most AI and agent systems cannot reliably answer three simple questions:
 
-```text
-execution mechanics
-    -> dbl-core
+- Who asked what?
+- What was actually allowed?
+- Why did this outcome happen?
 
-normative boundary
-    -> dbl-policy
+Policy, execution, and output are entangled.
 
-governance algebra
-    -> dbl-policy-gates
+That creates three failures:
 
-domain governance
-    -> tenant policies
-```
+- authority becomes implicit
+- replay becomes impossible
+- audit depends on logs, not structure
 
-Execution happens.
-Decisions are recorded.
-Policies are assembled.
+---
 
-`execution-without-normativity` shows that execution can exist without governance.
-`dbl-policy-gates` shows how governance can be made composable, replayable, and structurally comparable.
+## The idea
 
-## Structural premise
+Separate decision from execution.
 
-Policy, execution, and observation are often entangled in the same runtime path. When this happens, authority becomes implicit: it is no longer clear what was decided and what merely occurred during execution.
-
-DBL defines a structure where this distinction is explicit. Policy is represented as append-only decision events. Execution remains observational.
-
-## Architecture
-
-The architecture answers three different questions at three layers:
-
-| Layer | Question | Repositories |
-|-------|----------|-------------|
-| **Theory** | What must be true for deterministic governance to be possible? | [execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity), [dbl-paper](https://github.com/lukaspfisterch/dbl-paper) |
-| **Core** | How is that structure technically guaranteed? | [kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic), [dbl-core](https://github.com/lukaspfisterch/dbl-core), [dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog) |
-| **Governance** | How are explicit decisions represented and assembled? | [dbl-policy](https://github.com/lukaspfisterch/dbl-policy), [dbl-policy-gates](https://github.com/lukaspfisterch/dbl-policy-gates) |
-| **Runtime** | How does this work in practice? | [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway), [dbl-reference](https://github.com/lukaspfisterch/dbl-reference) |
-
-The full layer diagram is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
-
-## Reference Implementation
-
-The reference implementation is a stack, not a single repository.
+Record what was allowed as an explicit event.
 
 ```text
-theory
-execution-without-normativity
-
-execution mechanics
-dbl-core
-
-normative boundary
-dbl-policy
-
-governance algebra
-dbl-policy-gates
-
-runtime reference
-dbl-gateway
+INTENT → DECISION → EXECUTION
 ```
 
-This is the shortest path from the theory to a running system.
+Only `DECISION` is authoritative.
 
-## Reference Versions
+Everything else is contextual or observational.
 
-The current reference stack is:
+---
 
-- `dbl-core 0.3.6`
-- `dbl-policy 0.3.1`
-- `dbl-policy-gates 0.1.1`
-- `dbl-gateway 0.9.8`
+## The rule
 
-## Authority model
+> If something affects the outcome, it must appear in the DECISION.
 
-Not all events have the same status.
+If it does not appear there, it did not have authority.
 
-- **DECISION** events are authoritative.
-- **INTENT** events establish context but are not authoritative.
-- **EXECUTION** and **PROOF** events are observational.
+---
 
-Outputs, traces, timing, errors, and metrics do not influence governance unless explicitly admitted through a versioned boundary change.
+## What this gives you
 
-Execution may be non-deterministic. Governance remains explicit and replayable.
+### Deterministic governance
+
+Same admitted inputs, same decision.
+
+### Replayable state
+
+Decisions can be reconstructed without re-running execution.
+
+### Auditability
+
+Every outcome can be traced back to:
+
+- admitted inputs
+- policy version
+- explicit decision
+
+### No hidden authority
+
+Execution, timing, telemetry, and side effects stay observational unless a boundary change explicitly admits them.
+
+---
 
 ## What DBL is not
 
-- a product suite
-- a generic policy engine
-- an execution theory
-- a claim that execution itself is deterministic
-- a substitute for formal correctness or ethics
-- a post-hoc filtering scheme over runtime outputs
+DBL does not:
 
-## Documentation
+- make execution deterministic
+- define policy correctness
+- replace your models
+- provide user or tenant management
+- turn runtime observations into governance automatically
 
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md) -- Layered model overview and component roles
-- [BOUNDARIES.md](docs/BOUNDARIES.md) -- Boundary admission rules and information flow
-- [GOVERNANCE.md](docs/GOVERNANCE.md) -- Governance lifecycle, versioning, and decision semantics
-- [GL_SEPARATION.md](docs/GL_SEPARATION.md) -- Separation of G and L responsibilities
-- [INTEGRATION.md](docs/INTEGRATION.md) -- Integration flow across layers and repositories
-- [THREAT_MODEL.md](docs/THREAT_MODEL.md) -- Threat assumptions and failure modes
-- [CONSTITUTION.md](docs/CONSTITUTION.md) -- Minimal constitutional statement
+It defines where authority lives.
+
+---
+
+## Repository map
+
+### Theory
+
+- [execution-without-normativity](https://github.com/lukaspfisterch/execution-without-normativity)
+- [dbl-paper](https://github.com/lukaspfisterch/dbl-paper)
+
+### Core substrate
+
+- [kl-kernel-logic](https://github.com/lukaspfisterch/kl-kernel-logic)
+- [dbl-core](https://github.com/lukaspfisterch/dbl-core)
+- [dbl-vlog](https://github.com/lukaspfisterch/dbl-vlog)
+
+### Governance contract
+
+- [dbl-policy](https://github.com/lukaspfisterch/dbl-policy)
+- [dbl-policy-gates](https://github.com/lukaspfisterch/dbl-policy-gates)
+
+### Runtime boundary
+
+- [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway)
+
+This repository sits above those components as the architecture and navigation surface.
+
+---
+
+## Start here
+
+- [docs/MANIFEST.md](docs/MANIFEST.md) for the shortest path through the material
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the stack and layer roles
+- [docs/BOUNDARIES.md](docs/BOUNDARIES.md) for admission and information flow
+- [docs/GOVERNANCE.md](docs/GOVERNANCE.md) for policy lifecycle and replay rules
+- [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) for what must not leak into governance
+
+---
+
+## Selected Research Notes
+
+This repository also exposes a small public research surface.
+
+These notes are:
+
+- selected
+- redacted
+- observer-first
+- non-authoritative
+
+They are published to show that empirical validation work is active, without turning private research repos or raw case material into public dumps.
+
+Start at [docs/RESEARCH_NOTES.md](docs/RESEARCH_NOTES.md).
+
+---
+
+## One sentence
+
+> DBL makes it possible to prove what was allowed, independent of what happened.

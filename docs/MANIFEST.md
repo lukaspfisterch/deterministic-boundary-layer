@@ -1,15 +1,43 @@
-# Documentation Manifest
+# Start Here
 
-## Public Surface
+This repository is small on purpose.
 
-| Document | Purpose |
-|----------|---------|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Layered model overview and component roles |
-| [BOUNDARIES.md](BOUNDARIES.md) | Boundary admission rules and information flow |
-| [GOVERNANCE.md](GOVERNANCE.md) | Governance lifecycle, versioning, and decision semantics |
-| [GL_SEPARATION.md](GL_SEPARATION.md) | Separation of G and L responsibilities |
-| [INTEGRATION.md](INTEGRATION.md) | Integration flow across layers and repositories |
-| [THREAT_MODEL.md](THREAT_MODEL.md) | Threat assumptions and failure modes |
+Use it in this order.
+
+## 1. Fast orientation
+
+- [../README.md](../README.md)
+  What DBL is, what it is not, and why explicit DECISION events matter.
+
+## 2. Core structure
+
+- [ARCHITECTURE.md](ARCHITECTURE.md)
+  Layer model, repository roles, and where this repo sits in the stack.
+
+- [BOUNDARIES.md](BOUNDARIES.md)
+  What may enter governance and what must remain observational.
+
+- [GOVERNANCE.md](GOVERNANCE.md)
+  Policy lifecycle, replay guarantees, and why DECISION is authoritative.
+
+- [THREAT_MODEL.md](THREAT_MODEL.md)
+  Typical ways systems collapse boundary discipline.
+
+## 3. Supporting separation docs
+
+- [GL_SEPARATION.md](GL_SEPARATION.md)
+  Clear split between governance (`G`) and boundaries (`L`).
+
+- [INTEGRATION.md](INTEGRATION.md)
+  How the repositories and layers connect in practice.
+
+- [CONSTITUTION.md](CONSTITUTION.md)
+  Minimal constitutional summary.
+
+## 4. Public research surface
+
+- [RESEARCH_NOTES.md](RESEARCH_NOTES.md)
+  Redacted selected notes showing that empirical validation work is active.
 
 ## Legacy
 
