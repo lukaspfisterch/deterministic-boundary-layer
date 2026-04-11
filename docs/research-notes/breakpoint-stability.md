@@ -10,7 +10,7 @@ The public takeaway is simple:
 - earlier breakpoint regions can look severe while still remaining materially recoverable
 - this means “where failure begins” is not always the same as “where failure becomes stable”
 
-Why this should matter for DBL:
+Why this is worth tracking:
 
 - governance should not promote a breakpoint into authority just because it looked sharp in one slice
 - replayable adjacent-window checks are a better standard than a single dramatic case

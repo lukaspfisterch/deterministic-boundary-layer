@@ -11,7 +11,7 @@ It is the unstable middle:
 alive but fragile
 ```
 
-Why this matters:
+Why this is worth tracking:
 
 - these cases are where naive systems over-claim confidence
 - they are often the first place where governance and observation visibly disagree
