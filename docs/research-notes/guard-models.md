@@ -11,7 +11,7 @@ Before anything becomes policy-relevant, it needs an explicit guard model:
 - what ends the window
 - what happens under delay or latency
 
-Why this matters:
+Why this should matter:
 
 - it forces structure into a measurable form
 - it keeps research observer-only instead of pretending that a good-looking family is already executable authority
