@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.3] - 2026-04-12
+
+- Marked `dbl-gateway` `1.0.0` on the jump page as a stable core boundary contract rather than just another runtime revision
+- Added direct links to the gateway contract boundary doc from the jump page and runtime-docking manifest section
+
 ## [0.3.2] - 2026-04-12
 
 - Kept the jump-page `Active Boundary Topics` section as the single place for current runtime themes instead of repeating that panel in `dbl-gateway`

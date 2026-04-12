@@ -110,6 +110,7 @@ It defines where authority lives.
 - [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway)
 
 This repository sits above these components as the architectural map.
+`dbl-gateway` now marks its core boundary-to-decision contract stable at `1.0.0`.
 
 ---
 
@@ -139,6 +140,7 @@ Current implementation work at the runtime boundary is mainly concentrated aroun
 Those topics belong to the live boundary surface, not to the architectural core.
 For the concrete runtime shape, see [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway), especially:
 
+- [CONTRACT_BOUNDARY.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/CONTRACT_BOUNDARY.md)
 - [FIRST_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/FIRST_INTEGRATION.md)
 - [INTEGRATION_SLICE.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/INTEGRATION_SLICE.md)
 - [OIDC_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/OIDC_INTEGRATION.md)

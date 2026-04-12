@@ -31,6 +31,9 @@ Use it in this order.
 
 ## 3. Runtime docking
 
+- [dbl-gateway CONTRACT_BOUNDARY](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/CONTRACT_BOUNDARY.md)
+  Stable core contract versus evolving runtime surface.
+
 - [dbl-gateway FIRST_INTEGRATION](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/FIRST_INTEGRATION.md)
   Smallest practical path from startup to one inspected DECISION.
 
