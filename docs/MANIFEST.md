@@ -29,7 +29,18 @@ Use it in this order.
 - [THREAT_MODEL.md](THREAT_MODEL.md)
   Typical ways systems collapse boundary discipline.
 
-## 3. Supporting separation docs
+## 3. Runtime docking
+
+- [dbl-gateway FIRST_INTEGRATION](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/FIRST_INTEGRATION.md)
+  Smallest practical path from startup to one inspected DECISION.
+
+- [dbl-gateway INTEGRATION_SLICE](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/INTEGRATION_SLICE.md)
+  Raw send → decision → replay seam without client abstraction.
+
+- [dbl-gateway OIDC_INTEGRATION](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/OIDC_INTEGRATION.md)
+  Token-to-decision identity mapping with a concrete Entra example.
+
+## 4. Supporting separation docs
 
 - [GL_SEPARATION.md](GL_SEPARATION.md)
   Clear split between governance (`G`) and boundaries (`L`).
@@ -40,7 +51,7 @@ Use it in this order.
 - [CONSTITUTION.md](CONSTITUTION.md)
   Minimal constitutional summary.
 
-## 4. Public research surface
+## 5. Public research surface
 
 - [RESEARCH_NOTES.md](RESEARCH_NOTES.md)
   Redacted selected notes showing that empirical validation work is active.

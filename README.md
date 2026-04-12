@@ -130,13 +130,18 @@ This repository sits above these components as the architectural map.
 Current implementation work at the runtime boundary is mainly concentrated around:
 
 - exposure modes
+- integration path
 - identity mapping
 - tool-family gating
 - request shaping
 - economic shaping
 
 Those topics belong to the live boundary surface, not to the architectural core.
-For the concrete runtime shape, see [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway).
+For the concrete runtime shape, see [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway), especially:
+
+- [FIRST_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/FIRST_INTEGRATION.md)
+- [INTEGRATION_SLICE.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/INTEGRATION_SLICE.md)
+- [OIDC_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/OIDC_INTEGRATION.md)
 
 ---
 
