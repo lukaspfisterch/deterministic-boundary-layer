@@ -44,7 +44,7 @@ Governance happens before execution, and the decision can be replayed without re
 
 `deterministic-boundary-layer` is the public architectural entry point to that model.
 It shows where authority lives across the DBL stack, how the repositories fit together, and how deterministic governance stays separate from execution.
-In stack terms: DBL is the model, `dbl-gateway` is the runtime boundary (currently pitched for LLM governance), and `dbl-trading-zero` is the validation layer where DBL governance is stress-tested against real market data — the non-AI half of the pattern.
+In stack terms: DBL is the model, `dbl-gateway` is the runtime boundary for any non-deterministic backend (defaulted to LLM and agent traffic in its demo and OIDC configuration, but the core contract is backend-agnostic), and `dbl-trading-zero` is the validation layer where DBL governance is stress-tested against real market data — the non-AI half of the pattern running in the same stack.
 
 ---
 
