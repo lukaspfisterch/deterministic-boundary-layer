@@ -1,12 +1,36 @@
-# Deterministic Boundary Layer for AI Governance
+# Deterministic Boundary Layer
 
 > DBL lets you prove what was allowed, independent of what happened.
 
-Most AI systems can show prompts, traces, and logs, but still cannot prove what was explicitly allowed.
-If an LLM or agent takes an action and the governing decision cannot be replayed independent of execution, the system is not auditable or defensible.
-Logs are not proof. Decisions must be explicit.
+DBL is the boundary layer for systems where **deterministic governance must
+coexist with non-deterministic execution**. Wherever a deterministic system
+meets a non-deterministic one, authority must be fixed before the run and
+reproducible independent of the run. That is the problem DBL addresses.
 
-DBL is for platform, infra, governance, and compliance engineers building LLM and agent systems where decisions must be reproducible, traceable, and verifiable before execution.
+The pattern shows up in many places:
+
+- LLMs and AI agents — probabilistic output, tool use, autonomous action
+- markets — price formation and execution timing are not reproducible
+- human-in-the-loop decisions — clinical review, manual approval, expert judgement
+- physical systems — robotics, sensors, industrial control with noisy inputs
+- distributed systems — unordered effects, jitter, external APIs with unbounded latency
+- stochastic simulation and optimization — internally non-reproducible, but used to drive decisions with authority
+
+LLMs and AI agents are the most visible instance in 2026, and much of the
+tooling in this stack is pitched there first, but the pattern is older and
+broader. Everything in this repository applies equally to any system where
+what was allowed must be provable without replaying what happened.
+
+Most such systems can show prompts, traces, logs, tick data, or audit rows,
+but still cannot prove what was explicitly allowed before the non-deterministic
+part ran. If the governing decision cannot be replayed independent of
+execution, the system is not auditable or defensible. Logs are not proof.
+Decisions must be explicit.
+
+DBL is for platform, infra, governance, and compliance engineers building
+systems — LLM and agent, market-facing, human-in-the-loop, physical, or
+distributed — where decisions must be reproducible, traceable, and verifiable
+before execution.
 
 The model is simple:
 
@@ -16,11 +40,11 @@ INTENT → DECISION → EXECUTION
 
 Only `DECISION` is normative.
 Execution remains non-deterministic and observational.
-Governance happens before execution, and the decision can be replayed without re-running the model.
+Governance happens before execution, and the decision can be replayed without re-running the execution path.
 
 `deterministic-boundary-layer` is the public architectural entry point to that model.
 It shows where authority lives across the DBL stack, how the repositories fit together, and how deterministic governance stays separate from execution.
-In stack terms: DBL is the model, `dbl-gateway` is the runtime boundary, and `dbl-trading-zero` is the validation layer before authority.
+In stack terms: DBL is the model, `dbl-gateway` is the runtime boundary (currently pitched for LLM governance), and `dbl-trading-zero` is the validation layer where DBL governance is stress-tested against real market data — the non-AI half of the pattern.
 
 ---
 
