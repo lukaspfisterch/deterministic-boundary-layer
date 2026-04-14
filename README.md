@@ -1,5 +1,7 @@
 # Deterministic Boundary Layer for AI Governance
 
+> DBL lets you prove what was allowed, independent of what happened.
+
 Most AI systems can show prompts, traces, and logs, but still cannot prove what was explicitly allowed.
 If an LLM or agent takes an action and the governing decision cannot be replayed independent of execution, the system is not auditable or defensible.
 Logs are not proof. Decisions must be explicit.
@@ -44,6 +46,12 @@ Every outcome can be traced back to:
 
 Execution, timing, telemetry, and side effects stay observational unless a boundary change explicitly admits them.
 
+### Tamper-evident event chain
+
+Events are cryptographically linked. The rolling chain digest can be recomputed
+from the event sequence and verified end-to-end, independent of the runtime that
+produced it.
+
 ---
 
 ## Repository map
@@ -75,34 +83,34 @@ This repository sits above these components as the architectural map.
 
 ## Start here
 
-- [docs/MANIFEST.md](docs/MANIFEST.md)
-- [docs/WHY_EXPLICIT_DECISIONS.md](docs/WHY_EXPLICIT_DECISIONS.md)
-- [docs/SEE_IT_WORK.md](docs/SEE_IT_WORK.md)
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [docs/BOUNDARIES.md](docs/BOUNDARIES.md)
-- [docs/GOVERNANCE.md](docs/GOVERNANCE.md)
-- [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md)
+Two documents, in order:
+
+1. [docs/WHY_EXPLICIT_DECISIONS.md](docs/WHY_EXPLICIT_DECISIONS.md) — why implicit approval fails under LLM execution
+2. [docs/SEE_IT_WORK.md](docs/SEE_IT_WORK.md) — a concrete walkthrough of an INTENT → DECISION → EXECUTION chain
+
+To run a real request through the full chain in one minute, go to
+[dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway) and run the Docker demo.
+
+### Further reading
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — stack layout and component ownership
+- [docs/BOUNDARIES.md](docs/BOUNDARIES.md) — what crosses the boundary and what does not
+- [docs/GOVERNANCE.md](docs/GOVERNANCE.md) — the policy surface
+- [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md) — what DBL defends against and what it does not
+- [docs/MANIFEST.md](docs/MANIFEST.md) — full document index
 
 ---
 
-## Active Boundary Topics
+## Runtime boundary topics
 
-Current implementation work at the runtime boundary is mainly concentrated around:
+This repository is the architectural map. The concrete runtime shape — exposure
+modes, integration path, identity mapping via OIDC, tool-family gating, request
+and economic shaping — lives in [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway):
 
-- exposure modes
-- integration path
-- identity mapping
-- tool-family gating
-- request shaping
-- economic shaping
-
-Those topics belong to the live boundary surface, not to the architectural core.
-For the concrete runtime shape, see [dbl-gateway](https://github.com/lukaspfisterch/dbl-gateway), especially:
-
-- [CONTRACT_BOUNDARY.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/CONTRACT_BOUNDARY.md)
-- [FIRST_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/FIRST_INTEGRATION.md)
-- [INTEGRATION_SLICE.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/INTEGRATION_SLICE.md)
-- [OIDC_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/OIDC_INTEGRATION.md)
+- [CONTRACT_BOUNDARY.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/CONTRACT_BOUNDARY.md) — stable core contract vs evolving surface
+- [FIRST_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/FIRST_INTEGRATION.md) — first request, decision read, replay
+- [INTEGRATION_SLICE.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/INTEGRATION_SLICE.md) — raw send and inspection path
+- [OIDC_INTEGRATION.md](https://github.com/lukaspfisterch/dbl-gateway/blob/main/docs/OIDC_INTEGRATION.md) — OIDC token mapping with Entra example
 
 ---
 
@@ -121,8 +129,3 @@ They show active validation work without exposing raw case data.
 
 Start at [docs/RESEARCH_NOTES.md](docs/RESEARCH_NOTES.md).
 
----
-
-## One sentence
-
-> DBL lets you prove what was allowed, independent of what happened.
