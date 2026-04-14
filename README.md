@@ -1,51 +1,24 @@
-# Deterministic Boundary Layers
+# Deterministic Boundary Layer for AI Governance
 
-Make governance explicit.
+Most AI systems can show prompts, traces, and logs, but still cannot prove what was explicitly allowed.
+If an LLM or agent takes an action and the governing decision cannot be replayed independent of execution, the system is not auditable or defensible.
+Logs are not proof. Decisions must be explicit.
 
-`deterministic-boundary-layer` is the public entry point to the DBL architecture.
-It shows where authority lives, how the pieces fit together, and why explicit DECISION events matter under non-deterministic execution.
+DBL is for platform, infra, governance, and compliance engineers building LLM and agent systems where decisions must be reproducible, traceable, and verifiable before execution.
 
----
-
-## The problem
-
-Most AI and agent systems cannot answer three simple questions reliably:
-
-- Who asked what?
-- What was actually allowed?
-- Why did this outcome happen?
-
-Policy, execution, and output are entangled.
-
-That leads to three failures:
-
-- authority becomes implicit
-- replay becomes unreliable
-- audit depends on logs, not structure
-
----
-
-## The idea
-
-Separate decision from execution.
-
-Record what was allowed as an explicit event.
+The model is simple:
 
 ```text
 INTENT → DECISION → EXECUTION
 ```
 
-Only `DECISION` is authoritative.
+Only `DECISION` is normative.
+Execution remains non-deterministic and observational.
+Governance happens before execution, and the decision can be replayed without re-running the model.
 
-Everything else is contextual or observational.
-
----
-
-## The rule
-
-> If something affects the outcome, it must appear in the DECISION.
-
-If it does not appear there, it did not have authority.
+`deterministic-boundary-layer` is the public architectural entry point to that model.
+It shows where authority lives across the DBL stack, how the repositories fit together, and how deterministic governance stays separate from execution.
+In stack terms: DBL is the model, `dbl-gateway` is the runtime boundary, and `dbl-trading-zero` is the validation layer before authority.
 
 ---
 
@@ -70,20 +43,6 @@ Every outcome can be traced back to:
 ### No hidden authority
 
 Execution, timing, telemetry, and side effects stay observational unless a boundary change explicitly admits them.
-
----
-
-## What DBL is not
-
-DBL does not:
-
-- make execution deterministic
-- define policy correctness
-- replace your models
-- provide user or tenant management
-- turn runtime observations into governance automatically
-
-It defines where authority lives.
 
 ---
 
